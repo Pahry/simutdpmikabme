@@ -24,8 +24,17 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+            <li class="nav-item">
+              <a href="datastokdarah.php" class="nav-link">
+                <i class="nav-icon fas fa-book medical"></i>
+                <p>
+                  Data Stok Darah
+                </p>
+              </a>
+            </li>
+
           <li class="nav-item">
-            <a href="index.php" class="nav-link">
+            <a href="dataujisaring.php" class="nav-link">
               <i class="nav-icon fas fa-book medical"></i>
               <p>
                 Data Uji Saring Darah
@@ -52,7 +61,7 @@
           </li>
 
           <li class="nav-item">
-            <a href="datapetugasaftap.php" class="nav-link">
+            <a href="datapetugasutdpmi.php" class="nav-link">
               <i class="nav-icon fas fa-syringe"></i>
               <p>
                 Data Petugas UTD PMI

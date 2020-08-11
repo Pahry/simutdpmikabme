@@ -54,62 +54,6 @@
       
       <!-- /.container-fluid -->
       <div class="container-fluid">
-
-        <!-- <form>
-          <div class="form-group">
-            <label for="tanggalstokdarah">Tanggal Stok Darah</label>
-             <input type="date" class="form-control form-control-lg" id="tanggalstokdarah" name="tanggalstokdarah">
-          </div>
-          <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> Cari</button>
-        </form> --> 
-
-<!--         <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">No</th>
-              <th scope="col">Golda</th>
-              <th scope="col">PRC</th>
-              <th scope="col">TC</th>
-              <th scope="col">WB</th>
-              <th scope="col">Jumlah</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>A</td>
-              <td>5</td>
-              <td>4</td>
-              <td>2</td>
-              <td>11</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>B</td>
-              <td>5</td>
-              <td>2</td>
-              <td>3</td>
-              <td>10</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>AB</td>
-              <td>4</td>
-              <td>2</td>
-              <td>3</td>
-              <td>9</td>
-            </tr>
-            <tr>
-              <th scope="row">4</th>
-              <td>O</td>
-              <td>4</td>
-              <td>2</td>
-              <td>3</td>
-              <td>9</td>
-            </tr>
-          </tbody>
-        </table>
-        <button class="btn btn-success"><i class="fas fa-print"></i> Cetak</button> -->
         <a class="btn btn-danger" href="tambahujisaring.php"><i class="fas fa-plus"></i> Uji Saring</a>
         <table class="table table-striped">
           <thead>
@@ -143,6 +87,7 @@
               <td>13,0</td>
               <td>
                 <a class="btn btn-warning" href="#"><i class="far fa-eye"></i> Detail</a>
+                <a class="btn btn-primary" href="ubahujisaring.php"><i class="fas fa-edit"></i> Ubah</a>
               </td>
             </tr>
             <tr>
@@ -159,6 +104,7 @@
               <td>14,0</td>
               <td>
                 <a class="btn btn-warning" href="#"><i class="far fa-eye"></i> Detail</a>
+                <a class="btn btn-primary" href="ubahujisaring.php"><i class="fas fa-edit"></i> Ubah</a>
               </td>
             </tr>
             <tr>
@@ -175,6 +121,7 @@
               <td>14,0</td>
               <td>  
                 <a class="btn btn-warning" href="#"><i class="far fa-eye"></i> Detail</a>
+                <a class="btn btn-primary" href="ubahujisaring.php"><i class="fas fa-edit"></i> Ubah</a>
               </td>
             </tr>
             <tr>
@@ -191,6 +138,7 @@
               <td>14,0</td>
               <td>  
                 <a class="btn btn-warning" href="#"><i class="far fa-eye"></i> Detail</a>
+                <a class="btn btn-primary" href="ubahujisaring.php"><i class="fas fa-edit"></i> Ubah</a>
               </td>
             </tr>
           </tbody>

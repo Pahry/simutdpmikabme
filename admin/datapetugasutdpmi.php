@@ -1,3 +1,7 @@
+<?php include 'functions.php'; 
+  $datapetugasutdpmi = mysqli_query ($koneksi, "SELECT * FROM petugasutdpmi");
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -64,28 +68,35 @@
         </form>
 
 
-        <button class="btn btn-success mt-5"><i class="fas fa-plus"></i> Tambah Data Petugas Aftap</button>
+        <a class="btn btn-success mt-5" href="tambahpetugasutdpmi.php"><i class="fas fa-plus"></i> Tambah Data Petugas UTD PMI</a>
 
         <table class="table table-striped">
           <thead>
             <tr>
               <th scope="col">No</th>
               <th scope="col">Nama Petugas UTD PMI</th>
+              <th scope="col">Tanggal Lahir</th>
+              <th scope="col">Golda</th>
+              <th scope="col">Pendidikan Tertinggi</th>
+              <th scope="col">Jabatan</th>
+              <th scope="col">Aksi</th>
             </tr>
           </thead>
           <tbody>
+            <?php $no=1; while ($ptgs = mysqli_fetch_assoc($datapetugasutdpmi)) : ?>
             <tr>
-              <th scope="row">1</th>
-              <td>Petugas A</td>
+              <th scope="row"><?php echo $no; $no++; ?></th>
+              <td><?php echo $ptgs['namapetugasutdpmi']; ?></td>
+              <td><?php echo $ptgs['tanggallahirpetugasutdpmi']; ?></td>
+              <td><?php echo $ptgs['goldapetugasutdpmi']; ?></td>
+              <td><?php echo $ptgs['pendidikanpetugasutdpmi']; ?></td>
+              <td><?php echo $ptgs['jabatanpetugasutdpmi']; ?></td>
+              <td>
+                <a class="btn btn-primary" href="ubahpetugasutdpmi.php"><i class="fas fa-edit"></i> Ubah</a>
+                <button class="btn btn-danger"><i class="fas fa-trash"></i> Hapus</button>
+              </td>
             </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Petugas B</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>Petugas C</td>
-            </tr>
+        <?php endwhile; ?>
           </tbody>
         </table>
 

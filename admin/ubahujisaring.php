@@ -41,7 +41,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Tambah Uji Saring</h1>
+            <h1 class="m-0 text-dark">Ubah Uji Saring</h1>
           </div><!-- /.col -->
           <!-- /.col -->
         </div><!-- /.row -->
@@ -180,7 +180,7 @@
           <label for="nomortelepon">Nomor Telepon Pendonor</label>
           <input type="number" class="form-control" name="nomortelepon" id="nomortelepon">
         </div>
-      <button class="btn btn-success"><i class="fas fa-plus"></i> Tambah Data</button>
+      <button class="btn btn-success"><i class="fas fa-plus"></i> Ubah Data</button>
       <a class="btn btn-danger" href="dataujisaring.php"><i class="fas fa-backward"></i> Kembali</a>
 
       </div>
