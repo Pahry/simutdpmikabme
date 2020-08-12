@@ -1,5 +1,27 @@
 <?php include 'functions.php'; 
-  $datapetugasutdpmi = mysqli_query ($koneksi, "SELECT * FROM petugasutdpmi");
+  
+  // Konfigurasi Pagination
+// Menghitung jumlahhalaman = totaldata / dataperhalaman
+  $dataperhalaman = 5;
+
+  $result = mysqli_query($koneksi, "SELECT * FROM petugasutdpmi");
+  $totaldata = mysqli_num_rows($result);
+  $jumlahhalaman = ceil($totaldata / $dataperhalaman); 
+  
+  if (isset($_GET['halaman'])) {
+    $halamanaktif = $_GET["halaman"];
+  }else{
+    $halamanaktif = 1;
+  }
+
+  $awaldata = ($dataperhalaman * $halamanaktif) - $dataperhalaman;
+
+
+
+
+  $tampilpetugas = tampilpetugas("SELECT * FROM petugasutdpmi LIMIT $awaldata,$dataperhalaman");
+
+  
 ?>
 
 <!DOCTYPE html>
@@ -59,15 +81,6 @@
       <!-- /.container-fluid -->
       <div class="container-fluid">
         
-        <form>
-          <div class="form-group">
-            <label for="tanggalaftap">Tanggal Aftap</label>
-            <input type="date" class="form-control form-control-lg" id="tanggalaftap">
-          </div>
-          <button class="btn btn-primary" type="submit" name="cari"><i class="fas fa-search"></i> Cari</button>
-        </form>
-
-
         <a class="btn btn-success mt-5" href="tambahpetugasutdpmi.php"><i class="fas fa-plus"></i> Tambah Data Petugas UTD PMI</a>
 
         <table class="table table-striped">
@@ -83,20 +96,20 @@
             </tr>
           </thead>
           <tbody>
-            <?php $no=1; while ($ptgs = mysqli_fetch_assoc($datapetugasutdpmi)) : ?>
+            <?php $no=1; foreach ($tampilpetugas as $ptgs ) : ?>
             <tr>
-              <th scope="row"><?php echo $no; $no++; ?></th>
-              <td><?php echo $ptgs['namapetugasutdpmi']; ?></td>
-              <td><?php echo $ptgs['tanggallahirpetugasutdpmi']; ?></td>
-              <td><?php echo $ptgs['goldapetugasutdpmi']; ?></td>
-              <td><?php echo $ptgs['pendidikanpetugasutdpmi']; ?></td>
-              <td><?php echo $ptgs['jabatanpetugasutdpmi']; ?></td>
+              <th scope="row"><?= $no; $no++; ?></th>
+              <td><?= $ptgs['namapetugasutdpmi']; ?></td>
+              <td><?= $ptgs['tanggallahirpetugasutdpmi']; ?></td>
+              <td><?= $ptgs['goldapetugasutdpmi']; ?></td>
+              <td><?= $ptgs['pendidikanpetugasutdpmi']; ?></td>
+              <td><?= $ptgs['jabatanpetugasutdpmi']; ?></td>
               <td>
-                <a class="btn btn-primary" href="ubahpetugasutdpmi.php"><i class="fas fa-edit"></i> Ubah</a>
-                <button class="btn btn-danger"><i class="fas fa-trash"></i> Hapus</button>
+                <a class="btn btn-primary" href="ubahpetugasutdpmi.php?id=<?= $ptgs['idpetugasutdpmi'];?>"><i class="fas fa-edit"></i> Ubah</a>
+                <a class="btn btn-danger" href="hapuspetugasutdpmi.php?idpetugasutdpmi=<?= $ptgs['idpetugasutdpmi'];?>" onclick="return confirm('Apakah anda yakin ?')"><i class="fas fa-trash"></i> Hapus</button>
               </td>
             </tr>
-        <?php endwhile; ?>
+        <?php endforeach; ?>
           </tbody>
         </table>
 
@@ -104,19 +117,31 @@
         <nav aria-label="Page navigation example">
           <ul class="pagination justify-content-center">
             <li class="page-item">
-              <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-                <span class="sr-only">Previous</span>
-              </a>
+              <?php if ($halamanaktif == 1 ): ?>
+              <?php else : ?>
+                <a class="page-link" href="?halaman=1" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                  <span class="sr-only">Previous</span>
+                </a>
+              <?php endif ?>
             </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
+
+            <?php for ($i=1; $i <= $jumlahhalaman; $i++) : ?> 
+              <?php if ($i == $halamanaktif): ?>
+                <li class="page-item active"><a class="page-link" href="?halaman=<?= $i?>"><?= $i; ?></a></li>
+              <?php else: ?>
+                <li class="page-item"><a class="page-link" href="?halaman=<?= $i?>"><?= $i; ?></a></li>
+              <?php endif ?>
+            <?php endfor; ?>
+
             <li class="page-item">
-              <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-                <span class="sr-only">Next</span>
-              </a>
+              <?php if ($halamanaktif == $jumlahhalaman): ?>
+              <?php else: ?>
+                <a class="page-link" href="?halaman=<?= $jumlahhalaman?>" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                  <span class="sr-only">Next</span>
+                </a>
+              <?php endif ?>
             </li>
           </ul>
         </nav>

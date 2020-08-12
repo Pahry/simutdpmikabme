@@ -1,31 +1,34 @@
 <?php  
   include 'functions.php';
 
-  if (isset($_POST['submit'])) 
-  {
-  
-    if (tambahdatapetugas($_POST) > 0 ) 
+  $idpetugasutdpmi = $_GET['id'];
+ 
+  $ptgs = tampilpetugas("SELECT * FROM petugasutdpmi WHERE idpetugasutdpmi = $idpetugasutdpmi")[0];
+  var_dump($ptgs);
+  // Cek apakah tombol submit sudah diklik atau belum
+  if ( isset($_POST["submit"])) 
+  {   
+    // jalankan fungsi ubah
+    // cek apakah data berhasil diubah atau tidak
+    if (ubahpetugasutdpmi($_POST) > 0 ) 
     {
-      // echo "<div class='alert alert-success' role='alert'>";
-      // echo "<h4 class='alert-heading text-center'> Data berhasil ditambahkan </h4>";
-      // echo "</div>";
       echo "<script>
-              alert('Data berhasil ditambahkan');
+              alert('Data berhasil diubah');
               document.location.href = 'datapetugasutdpmi.php';
             </script>" ;
-    }
-      else
+    }else
     {
-      // echo "Data gagal ditambahkan";
-      // echo "<br>";
-      // echo mysqli_error($koneksi);
       echo "<script>
-              alert('Data gagal ditambahkan');
+              alert('Data gagal diubah');
               document.location.href = 'datapetugasutdpmi.php';
             </script>" ;
     }
   }
+
+
+  
 ?> 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -70,7 +73,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Tambah Petugas UTD PMI</h1>
+            <h1 class="m-0 text-dark">Ubah Data Petugas UTD PMI</h1>
           </div><!-- /.col -->
           <!-- /.col -->
         </div><!-- /.row -->
@@ -84,14 +87,19 @@
       <!-- /.container-fluid -->
       <div class="container-fluid">
         
-      <form action="" method="POST">
+      <form action="" method="post">
+      
+      <div class="form-group">
+          
+          <input type="hidden" name="idpetugasutdpmi" value="<?php echo $ptgs['idpetugasutdpmi']; ?>">
+        </div>
         <div class="form-group">
           <label for="namappetugasutdpmi">Nama Petugas</label>
-          <input type="text" class="form-control" id="namapetugasutdpmi" name="namapetugasutdpmi" placeholder="Masukkan Nama Lengkap" required>
+          <input type="text" class="form-control" id="namapetugasutdpmi" name="namapetugasutdpmi" placeholder="Masukkan Nama Lengkap" value="<?php echo $ptgs['namapetugasutdpmi']; ?>" required>
         </div>
         <div class="form-group">
           <label for="tanggallahir">Tanggal Lahir</label>
-          <input type="date" name="tanggallahir" id="tanggallahir" class="form-control" required>
+          <input type="date" name="tanggallahir" id="tanggallahir" class="form-control" value="<?php echo $ptgs['tanggallahir']; ?>" required>
         </div>
         <div class="form-group">
           <label for="golongandarah">Golongan Darah</label>
@@ -104,14 +112,14 @@
         </div>
         <div class="form-group">
           <label for="pendidikan">Pendidikan</label>
-          <input type="text" name="pendidikan" id="pendidikan" class="form-control" required>
+          <input type="text" name="pendidikan" id="pendidikan" class="form-control" value="<?php echo $ptgs['pendidikanpetugasutdpmi']; ?>" required>
         </div>
         <div class="form-group">
           <label for="jabatan">Jabatan</label>
-          <input type="text" name="jabatan" id="jabatan" class="form-control" required>
+          <input type="text" name="jabatan" id="jabatan" class="form-control" value="<?php echo $ptgs['jabatanpetugasutdpmi']; ?>" required>
         </div>
         
-      <button class="btn btn-success" type="submit" name="submit"><i class="fas fa-plus"></i> Tambah Data</button>
+      <button class="btn btn-success" type="submit" name="submit"><i class="fas fa-plus"></i> Ubah Data</button>
       <a class="btn btn-danger" href="datapetugasutdpmi.php"><i class="fas fa-backward"></i> Kembali</a>
 
 
