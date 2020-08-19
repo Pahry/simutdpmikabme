@@ -1,34 +1,32 @@
 <?php  
+
   include 'functions.php';
 
-  $idpetugasutdpmi = $_GET['id'];
- 
-  $ptgs = tampilpetugas("SELECT * FROM petugasutdpmi WHERE idpetugasutdpmi = $idpetugasutdpmi")[0];
+  global $koneksi;
 
-  // Cek apakah tombol submit sudah diklik atau belum
-  if ( isset($_POST["submit"])) 
-  {   
-    // jalankan fungsi ubah
-    // cek apakah data berhasil diubah atau tidak
-    if (ubahpetugasutdpmi($_POST) > 0 ) 
+  $tampilflebotomi = tampilpetugas(
+    "SELECT idpetugasutdpmi,namapetugasutdpmi FROM petugasutdpmi");
+
+  if (isset($_POST['submit'])) 
+  {
+
+    if(tambahflebotomi($_POST) > 0 )
     {
       echo "<script>
-              alert('Data berhasil diubah');
-              document.location.href = 'datapetugasutdpmi.php';
+              alert('Data berhasil ditambahkan');
+              document.location.href = 'dataflebotomi.php';
             </script>" ;
     }else
     {
       echo "<script>
-              alert('Data gagal diubah');
+              alert('Data gagal ditambahkan');
               document.location.href = 'datapetugasutdpmi.php';
             </script>" ;
+      echo mysqli_error($koneksi);
     }
   }
 
-
-
 ?> 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -57,7 +55,6 @@
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -73,7 +70,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Ubah Data Petugas UTD PMI</h1>
+            <h1 class="m-0 text-dark">Tambah Pasien Flebotomi</h1>
           </div><!-- /.col -->
           <!-- /.col -->
         </div><!-- /.row -->
@@ -87,41 +84,80 @@
       <!-- /.container-fluid -->
       <div class="container-fluid">
         
-      <form action="" method="post">
-      
-      <div class="form-group">
-          
-          <input type="hidden" name="idpetugasutdpmi" value="<?php echo $ptgs['idpetugasutdpmi']; ?>">
+      <form action="" method="POST">
+        <div class="form-group">
+          <label for="tanggaldonorflebotomi">Tanggal Donor</label>
+          <input type="date" class="form-control" name="tanggaldonorflebotomi" id="tanggaldonorflebotomi" required>
         </div>
         <div class="form-group">
-          <label for="namappetugasutdpmi">Nama Petugas</label>
-          <input type="text" class="form-control" id="namapetugasutdpmi" name="namapetugasutdpmi" placeholder="Masukkan Nama Lengkap" value="<?php echo $ptgs['namapetugasutdpmi']; ?>" required>
+          <label for="nomorktpflebotomi">Nomor KTP</label>
+          <input type="text" class="form-control" id="nomorktpflebotomi" name="nomorktpflebotomi" placeholder="Masukkan Nomor KTP" required>
         </div>
         <div class="form-group">
-          <label for="tanggallahir">Tanggal Lahir</label>
-          <input type="date" name="tanggallahir" id="tanggallahir" class="form-control" value="<?php echo $ptgs['tanggallahirpetugasutdpmi']; ?>" required>
+          <label for="namaflebotomi">Nama Pasien Flebotomi</label>
+          <input type="text" class="form-control" id="namaflebotomi" name="namaflebotomi" placeholder="Masukkan Nama Lengkap Pasien Flebotomi" required>
         </div>
         <div class="form-group">
-          <label for="golongandarah">Golongan Darah</label>
-          <select class="form-control" id="golongandarah" name="golongandarah">
-            <option value="A (+)" <?php if($ptgs['goldapetugasutdpmi'] == "A (+)")  echo "selected" ?>>A (+)</option>
-            <option value="B (+)" <?php if($ptgs['goldapetugasutdpmi'] == "B (+)")  echo "selected" ?>>B (+)</option>
-            <option value="AB (+)"<?php if($ptgs['goldapetugasutdpmi'] == "AB (+)") echo "selected" ?>>AB (+)</option>
-            <option value="O (+)" <?php if($ptgs['goldapetugasutdpmi'] == "O (+)")  echo "selected" ?>>O (+)</option>
+          <label for="jeniskelaminflebotomi">Jenis Kelamin</label>
+          <select class="form-control" id="jeniskelaminflebotomi" name="jeniskelaminflebotomi" required>
+            <option value="Laki-laki">Laki-laki</option>
+            <option value="Perempuan">Perempuan</option>
           </select>
         </div>
         <div class="form-group">
-          <label for="pendidikan">Pendidikan</label>
-          <input type="text" name="pendidikan" id="pendidikan" class="form-control" value="<?php echo $ptgs['pendidikanpetugasutdpmi']; ?>" required>
+          <label for="alamatflebotomi">Alamat Rumah</label>
+          <textarea class="form-control" name="alamatflebotomi" id="alamatflebotomi" rows="3" required></textarea>
         </div>
         <div class="form-group">
-          <label for="jabatan">Jabatan</label>
-          <input type="text" name="jabatan" id="jabatan" class="form-control" value="<?php echo $ptgs['jabatanpetugasutdpmi']; ?>" required>
+          <label for="nomorteleponflebotomi">Nomor Telepon</label>
+          <input type="text" class="form-control" name="nomorteleponflebotomi" id="nomorteleponflebotomi" required>
         </div>
-        
-      <button class="btn btn-success" type="submit" name="submit"><i class="fas fa-plus"></i> Ubah Data</button>
-      <a class="btn btn-danger" href="datapetugasutdpmi.php"><i class="fas fa-backward"></i> Kembali</a>
+        <div class="form-group">
+          <label for="pekerjaanflebotomi">Pekerjaan</label>
+          <input type="text" class="form-control" name="pekerjaanflebotomi" id="pekerjaanflebotomi" required>
+        </div>
+        <div class="form-group">
+          <label for="tanggallahir">Tanggal Lahir</label>
+          <input type="date" class="form-control" name="tanggallahirflebotomi" id="tanggallahir" required>
+        </div>
+        <div class="form-group">
+          <label for="umur">Umur</label>
+          <input type="number" class="form-control" name="umurflebotomi" id="umur" min="17" max="60" placeholder="17-60 tahun" required>
+        </div>
+        <div class="form-group">
+          <label for="golongandarah">Golongan Darah</label>
+          <select class="form-control" id="golongandarah" name="goldaflebotomi" required>
+            <option value="A (+)">A (+)</option>
+            <option value="B (+)">B (+)</option>
+            <option value="AB (+)">AB (+)</option>
+            <option value="O (+)">O (+)</option>
+          </select>
+        </div>
+       <h1 class="mt-3 text-dark">Diisi oleh Petugas Pemeriksaan Pendahuluan</h1>
+        <h1 class="mt-3 text-dark">Data Petugas Aftap</h1>
+        <div class="form-group">
+          <label for="idpetugasutdpmi">Nama Petugas Aftap</label>
+          <select class="form-control" id="idpetugasutdpmi" name="idpetugasutdpmi" required>
+            <option>Pilih Petugas Aftap</option>
+            <?php foreach ($tampilflebotomi as $ptgs) : var_dump($ptgs); ?>
+              <option value="<?php echo $ptgs["idpetugasutdpmi"]; ?>"><?php echo $ptgs["namapetugasutdpmi"]; ?></option>
+            <?php endforeach ?>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="sebanyakflebotomi">Sebanyak</label>
+          <input type="text" name="sebanyakflebotomi" id="sebanyakflebotomi" class="form-control" required>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="nomorkantongflebotomi">Nomor Kantong</label>
+          <input type="text" name="nomorkantongflebotomi" class="form-control" id="nomorkantongflebotomi" required>
+        </div>
 
+        <button class="btn btn-success" type="submit" name="submit"><i class="fas fa-plus"></i> Tambah Data Pendonor</button>
+        <a class="btn btn-danger" href="dataflebotomi.php"><i class="fas fa-backward"></i> Kembali</a>
+
+      </form>
 
       </div>
     </section>

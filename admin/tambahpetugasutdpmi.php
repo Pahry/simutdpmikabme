@@ -1,5 +1,8 @@
 <?php  
+  
   include 'functions.php';
+  
+  global $koneksi;
 
   if (isset($_POST['submit'])) 
   {
@@ -23,6 +26,8 @@
               alert('Data gagal ditambahkan');
               document.location.href = 'datapetugasutdpmi.php';
             </script>" ;
+            
+      echo mysqli_error($koneksi);
     }
   }
 ?> 
@@ -111,8 +116,9 @@
           <input type="text" name="jabatan" id="jabatan" class="form-control" required>
         </div>
         
-      <button class="btn btn-success" type="submit" name="submit"><i class="fas fa-plus"></i> Tambah Data</button>
-      <a class="btn btn-danger" href="datapetugasutdpmi.php"><i class="fas fa-backward"></i> Kembali</a>
+        <button class="btn btn-success" type="submit" name="submit"><i class="fas fa-plus"></i> Tambah Data</button>
+        <a class="btn btn-danger" href="datapetugasutdpmi.php"><i class="fas fa-backward"></i> Kembali</a>
+      </form>
 
 
       </div>

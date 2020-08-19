@@ -61,6 +61,15 @@
           </li>
 
           <li class="nav-item">
+            <a href="dataflebotomi.php" class="nav-link">
+              <i class="nav-icon fas fa-hand-holding-water"></i>
+              <p>
+                Data Flebotomi
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
             <a href="datapetugasutdpmi.php" class="nav-link">
               <i class="nav-icon fas fa-syringe"></i>
               <p>

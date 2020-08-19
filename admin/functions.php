@@ -61,13 +61,49 @@ function ubahpetugasutdpmi($data)
     		goldapetugasutdpmi 			= '$golongandarah',
     		pendidikanpetugasutdpmi 	= '$pendidikan',
     		jabatanpetugasutdpmi 		= '$jabatan' 
-    		WHERE idpetugasutdpmi 		= $idpetugasutdpmi";
+    		WHERE idpetugasutdpmi 		=  $idpetugasutdpmi";
 	
 	mysqli_query($koneksi,$query);
 	return mysqli_affected_rows($koneksi);
 
-	var_dump(mysqli_affected_rows($koneksi));
+	
 
 }
 
- ?>
+function tampilflebotomi($data)
+{
+	global $koneksi;
+
+	$result = mysqli_query($koneksi, $data);
+	$rows 	= [];
+	while($row  = mysqli_fetch_assoc($result))
+	{
+		$rows[] = $row;
+	}
+	return $rows;
+}
+
+function tambahflebotomi($data)
+{
+	global $koneksi;
+
+	$nomorktpflebotomi		= htmlspecialchars($data['nomorktpflebotomi']);
+	$namaflebotomi			= htmlspecialchars($data['namaflebotomi']);
+	$tanggallahirflebotomi	= htmlspecialchars($data['tanggallahirflebotomi']);
+	$umurflebotomi			= htmlspecialchars($data['umurflebotomi']);
+	$jeniskelaminflebotomi	= htmlspecialchars($data['jeniskelaminflebotomi']);
+	$goldaflebotomi			= htmlspecialchars($data['goldaflebotomi']);
+	$nomorteleponflebotomi	= htmlspecialchars($data['nomorteleponflebotomi']);
+	$alamatflebotomi		= htmlspecialchars($data['alamatflebotomi']);
+	$sebanyakflebotomi		= htmlspecialchars($data['sebanyakflebotomi']);
+	$nomorkantongflebotomi	= htmlspecialchars($data['nomorkantongflebotomi']);
+	$idpetugasutdpmi		= htmlspecialchars($data['idpetugasutdpmi']);
+	
+	$query 	= 	"INSERT INTO flebotomi VALUES 
+				('', '$nomorktpflebotomi','$namaflebotomi','$tanggallahirflebotomi','$umurflebotomi','$jeniskelaminflebotomi','$goldaflebotomi','$nomorteleponflebotomi','$alamatflebotomi','$sebanyakflebotomi','$nomorkantongflebotomi','$idpetugasutdpmi')";
+
+	mysqli_query($koneksi,$query);
+
+	return mysqli_affected_rows($koneksi);
+}
+?>

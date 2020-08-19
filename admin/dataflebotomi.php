@@ -1,33 +1,12 @@
-<?php  
-  include 'functions.php';
+<?php 
+include 'functions.php';
 
-  $idpetugasutdpmi = $_GET['id'];
- 
-  $ptgs = tampilpetugas("SELECT * FROM petugasutdpmi WHERE idpetugasutdpmi = $idpetugasutdpmi")[0];
+$tampilflebotomi = tampilflebotomi(
+  "SELECT petugasutdpmi.namapetugasutdpmi, flebotomi.idflebotomi, flebotomi.namaflebotomi,flebotomi.umurflebotomi,flebotomi.goldaflebotomi
+  FROM flebotomi
+  INNER JOIN petugasutdpmi ON flebotomi.idpetugasutdpmi = petugasutdpmi.idpetugasutdpmi");
 
-  // Cek apakah tombol submit sudah diklik atau belum
-  if ( isset($_POST["submit"])) 
-  {   
-    // jalankan fungsi ubah
-    // cek apakah data berhasil diubah atau tidak
-    if (ubahpetugasutdpmi($_POST) > 0 ) 
-    {
-      echo "<script>
-              alert('Data berhasil diubah');
-              document.location.href = 'datapetugasutdpmi.php';
-            </script>" ;
-    }else
-    {
-      echo "<script>
-              alert('Data gagal diubah');
-              document.location.href = 'datapetugasutdpmi.php';
-            </script>" ;
-    }
-  }
-
-
-
-?> 
+ ?>
 
 <!DOCTYPE html>
 <html>
@@ -57,7 +36,9 @@
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-
+    <!-- DataTables -->
+  <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -73,7 +54,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Ubah Data Petugas UTD PMI</h1>
+            <h1 class="m-0 text-dark">Data Pleubotomi, <?php date_default_timezone_set("Asia/Jakarta"); echo date("l d-M-Y H:i:s ") . "WIB"; ?></h1>
           </div><!-- /.col -->
           <!-- /.col -->
         </div><!-- /.row -->
@@ -83,47 +64,64 @@
 
     <!-- Main content -->
     <section class="content">
-      
-      <!-- /.container-fluid -->
+
       <div class="container-fluid">
-        
-      <form action="" method="post">
-      
-      <div class="form-group">
-          
-          <input type="hidden" name="idpetugasutdpmi" value="<?php echo $ptgs['idpetugasutdpmi']; ?>">
-        </div>
-        <div class="form-group">
-          <label for="namappetugasutdpmi">Nama Petugas</label>
-          <input type="text" class="form-control" id="namapetugasutdpmi" name="namapetugasutdpmi" placeholder="Masukkan Nama Lengkap" value="<?php echo $ptgs['namapetugasutdpmi']; ?>" required>
-        </div>
-        <div class="form-group">
-          <label for="tanggallahir">Tanggal Lahir</label>
-          <input type="date" name="tanggallahir" id="tanggallahir" class="form-control" value="<?php echo $ptgs['tanggallahirpetugasutdpmi']; ?>" required>
-        </div>
-        <div class="form-group">
-          <label for="golongandarah">Golongan Darah</label>
-          <select class="form-control" id="golongandarah" name="golongandarah">
-            <option value="A (+)" <?php if($ptgs['goldapetugasutdpmi'] == "A (+)")  echo "selected" ?>>A (+)</option>
-            <option value="B (+)" <?php if($ptgs['goldapetugasutdpmi'] == "B (+)")  echo "selected" ?>>B (+)</option>
-            <option value="AB (+)"<?php if($ptgs['goldapetugasutdpmi'] == "AB (+)") echo "selected" ?>>AB (+)</option>
-            <option value="O (+)" <?php if($ptgs['goldapetugasutdpmi'] == "O (+)")  echo "selected" ?>>O (+)</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="pendidikan">Pendidikan</label>
-          <input type="text" name="pendidikan" id="pendidikan" class="form-control" value="<?php echo $ptgs['pendidikanpetugasutdpmi']; ?>" required>
-        </div>
-        <div class="form-group">
-          <label for="jabatan">Jabatan</label>
-          <input type="text" name="jabatan" id="jabatan" class="form-control" value="<?php echo $ptgs['jabatanpetugasutdpmi']; ?>" required>
-        </div>
-        
-      <button class="btn btn-success" type="submit" name="submit"><i class="fas fa-plus"></i> Ubah Data</button>
-      <a class="btn btn-danger" href="datapetugasutdpmi.php"><i class="fas fa-backward"></i> Kembali</a>
+        <div class="row">
+          <div class="col-12">
 
+            <!-- /.card -->
 
+            <div class="card">
+              <div class="card-header">
+                <a class="btn btn-success" href="tambahflebotomi.php"><i class="fa fa-plus"></i> Tambah Pasien Flebotomi</a>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Golda</th>
+                    <th>Petugas Aftap</th>
+                    <th>Aksi</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <?php $no=1; foreach ($tampilflebotomi as $tplflb) : ?>
+                  <tr>
+                    <td><?php echo $no; $no++; ?></td>
+                    <td><?php echo $tplflb['namaflebotomi'] ?></td>
+                    <td><?php echo $tplflb['goldaflebotomi']; ?></td>
+                    <td><?php echo $tplflb['namapetugasutdpmi']; ?></td>
+                    <td>
+                      <a href="#" class="btn btn-warning"><i class="fas fa-eye"></i> Detail</a>
+                      <a href="ubahflebotomi.php?id=<?=$tplflb['idflebotomi'];?>" class="btn btn-primary"><i class="fas fa-edit"></i> Ubah</a>
+                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i> Hapus</a>
+                    </td>
+                  </tr>
+                  <?php endforeach; ?>
+                  </tbody>
+                  <tfoot>
+                  <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Umur</th>
+                    <th>Golda</th>
+                    <th>Aksi</th>
+                  </tr>
+                  </tfoot>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
       </div>
+      <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
   </div>
@@ -169,5 +167,27 @@
 <script src="dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+<!-- DataTables -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
 </body>
 </html>

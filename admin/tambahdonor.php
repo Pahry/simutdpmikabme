@@ -55,7 +55,7 @@
       <!-- /.container-fluid -->
       <div class="container-fluid">
         
-      <form>
+      <form method="post">
         <div class="form-group">
           <label for="tempatdonordarah">Tempat Donor Darah</label>
           <input type="text" class="form-control" id="tempatdonordarah" name="tempatdonordarah">
@@ -124,7 +124,7 @@
           <input type="text" name="nomorkantong" class="form-control" id="nomorkantong">
         </div>
       </form>
-      <button class="btn btn-success"><i class="fas fa-plus"></i> Tambah Data Pendonor</button>
+      <button class="btn btn-success" type="submit" name="submit" value="Submit"><i class="fas fa-plus"></i> Tambah Data Pendonor</button>
       <a class="btn btn-danger" href="datapendonor.php"><i class="fas fa-backward"></i> Kembali</a>
 
       </div>
