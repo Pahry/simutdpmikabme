@@ -103,6 +103,7 @@ function tambahflebotomi($data)
 	$pengambilanflebotomi	= htmlspecialchars($data['pengambilanflebotomi']);
 	$reaksiflebotomi		= htmlspecialchars($data['reaksiflebotomi']);
 	$idpetugasutdpmi		= htmlspecialchars($data['idpetugasutdpmi']);
+	$idparamedisflebotomi	= htmlspecialchars($data['paramedisflebotomi']);
 	
 	$query 	= 	"INSERT INTO flebotomi VALUES 
 				('','$tanggaldonorflebotomi',
@@ -123,7 +124,8 @@ function tambahflebotomi($data)
 				'$sebanyakflebotomi',
 				'$pengambilanflebotomi',
 				'$reaksiflebotomi',
-				'$idpetugasutdpmi')";
+				'$idpetugasutdpmi',
+				'$idparamedisflebotomi')";
 
 	mysqli_query($koneksi,$query);
 
@@ -154,6 +156,7 @@ function ubahflebotomi($data)
 	$pengambilanflebotomi	= htmlspecialchars($data['pengambilanflebotomi']);
 	$reaksiflebotomi		= htmlspecialchars($data['reaksiflebotomi']);
 	$idpetugasutdpmi		= htmlspecialchars($data['idpetugasutdpmi']);
+	$idparamedis 		 	= htmlspecialchars($data['paramedisflebotomi']);
 
 	$query = 	"UPDATE flebotomi SET 
 						tanggaldonorflebotomi 	= '$tanggaldonorflebotomi', 
@@ -173,7 +176,8 @@ function ubahflebotomi($data)
 						jeniskantongflebotomi 	= '$jeniskantongflebotomi', 
 						sebanyakflebotomi		= '$sebanyakflebotomi',
 						pengambilanflebotomi 	= '$pengambilanflebotomi', 
-						reaksiflebotomi 		= '$reaksiflebotomi' 
+						reaksiflebotomi 		= '$reaksiflebotomi',
+						idparamedis 			= '$idparamedis' 
 				WHERE 	flebotomi.idflebotomi 	= $idflebotomi";
 
 	mysqli_query($koneksi,$query);
@@ -190,21 +194,6 @@ function hapusflebotomi($data)
 	mysqli_query($koneksi,$query);
 
 	return mysqli_affected_rows($koneksi);
-}
-
-function tampilpendonor($data)
-{
-	global $koneksi;
-
-	$result = mysqli_query($koneksi, $data);
-	$rows 	= [];
-
-	while($row = mysqli_fetch_assoc($result))
-	{
-		$rows[] = $row;
-	}
-
-	return $rows;
 }
 
 function tampilpasien($data)
@@ -329,5 +318,239 @@ function tampilpasien($data)
 		mysqli_query($koneksi,$data);
 
 		return mysqli_affected_rows($koneksi);
+	}
+
+	function tampilpendonor($data)
+	{
+		global $koneksi;
+
+		
+		$result = mysqli_query($koneksi, $data);
+		
+		$rows 	= [];
+
+		while($row = mysqli_fetch_assoc($result))
+		{
+			$rows[] = $row;
+		}
+
+		return $rows;
+	}
+
+	function tambahpendonor($data)
+	{
+		global $koneksi;
+
+		$tanggaldonor			= htmlspecialchars($data['tanggaldonor']);
+		$tempatdonor			= htmlspecialchars($data['tempatdonor']);
+		$nomorktp				= htmlspecialchars($data['nomorktp']);
+		$namapendonor			= htmlspecialchars($data['namapendonor']);
+		$jeniskelamin			= htmlspecialchars($data['jeniskelamin']);
+		$alamat					= htmlspecialchars($data['alamat']);
+		$nomortelepon			= htmlspecialchars($data['nomortelepon']);
+		$pekerjaan				= htmlspecialchars($data['pekerjaan']);
+		$tanggallahir			= htmlspecialchars($data['tanggallahir']);
+		$umur					= htmlspecialchars($data['umur']);
+		$donorke				= htmlspecialchars($data['donorke']);
+		$sys	 				= htmlspecialchars($data['sys']);
+		$dia					= htmlspecialchars($data['dia']);
+		$hb						= htmlspecialchars($data['hb']);
+		$golda					= htmlspecialchars($data['golda']);
+		$nomorkantong			= htmlspecialchars($data['nomorkantong']);
+		$jeniskantong 			= htmlspecialchars($data['jeniskantong']);
+		$sebanyak				= htmlspecialchars($data['sebanyak']);
+		$pengambilan			= htmlspecialchars($data['pengambilan']);
+		$reaksi					= htmlspecialchars($data['reaksi']);
+		$idpetugasutdpmi		= htmlspecialchars($data['petugasaftap']);
+		$idparamedis 			= htmlspecialchars($data['paramedis']);
+		
+		$query 	= 	"INSERT INTO pendonor VALUES 
+					('','$tanggaldonor',
+					'$tempatdonor',
+					'$nomorktp',
+					'$namapendonor',
+					'$jeniskelamin',
+					'$alamat',
+					'$nomortelepon',
+					'$pekerjaan',
+					'$tanggallahir',
+					'$umur',
+					'$donorke',
+					'$sys',
+					'$dia',
+					'$hb',
+					'$golda',
+					'$nomorkantong',
+					'$jeniskantong',
+					'$sebanyak',
+					'$pengambilan',
+					'$reaksi',
+					'$idpetugasutdpmi',
+					'$idparamedis')";
+
+		mysqli_query($koneksi,$query);
+
+		return mysqli_affected_rows($koneksi);
+	}
+
+	function ubahpendonor($data)
+	{
+		global $koneksi;
+		$idpendonor				= $data['idpendonor'];	
+		$tanggaldonor			= htmlspecialchars($data['tanggaldonor']);
+		$tempatdonor			= htmlspecialchars($data['tempatdonor']);
+		$nomorktp				= htmlspecialchars($data['nomorktp']);
+		$namapendonor			= htmlspecialchars($data['namapendonor']);
+		$jeniskelamin			= htmlspecialchars($data['jeniskelamin']);
+		$alamat					= htmlspecialchars($data['alamat']);
+		$nomortelepon			= htmlspecialchars($data['nomortelepon']);
+		$pekerjaan				= htmlspecialchars($data['pekerjaan']);
+		$tanggallahir			= htmlspecialchars($data['tanggallahir']);
+		$umur					= htmlspecialchars($data['umur']);
+		$donorke				= htmlspecialchars($data['donorke']);
+		$sys	 				= htmlspecialchars($data['sys']);
+		$dia					= htmlspecialchars($data['dia']);
+		$hb						= htmlspecialchars($data['hb']);
+		$golda					= htmlspecialchars($data['golda']);
+		$nomorkantong			= htmlspecialchars($data['nomorkantong']);
+		$jeniskantong 			= htmlspecialchars($data['jeniskantong']);
+		$sebanyak				= htmlspecialchars($data['sebanyak']);
+		$pengambilan			= htmlspecialchars($data['pengambilan']);
+		$reaksi					= htmlspecialchars($data['reaksi']);
+		$idpetugasutdpmi		= htmlspecialchars($data['petugasaftap']);
+		$idparamedis 			= htmlspecialchars($data['paramedis']);
+		
+		$query 	= 	"UPDATE pendonor SET 
+					tanggalpendonor 				= '$tanggaldonor',
+					tempatpenyumbanganpendonor 		= '$tempatdonor',
+					nomorktppendonor				= '$nomorktp',
+					namapendonor 					= '$namapendonor',
+					jeniskelaminpendonor			= '$jeniskelamin',
+					alamatpendonor					= '$alamat',
+					nomorteleponpendonor			= '$nomortelepon',
+					pekerjaanpendonor				= '$pekerjaan',
+					tanggallahirpendonor			= '$tanggallahir',
+					umurpendonor					= '$umur',
+					donorkependonor 				= '$donorke',
+					sistolependonor					= '$sys',
+					diastolependonor 				= '$dia',
+					hbpendonor 						= '$hb',
+					goldapendonor 					= '$golda',
+					nomorkantongpendonor 			= '$nomorkantong',
+					jeniskantongpendonor 			= '$jeniskantong',
+					sebanyakpendonor 				= '$sebanyak',
+					pengambilanpendonor		 		= '$pengambilan',
+					reaksipendonor 					= '$reaksi',
+					idpetugasutdpmi 				= '$idpetugasutdpmi',
+					idparamedis 					='$idparamedis'
+					where idpendonor = $idpendonor";
+
+		mysqli_query($koneksi,$query);
+
+		return mysqli_affected_rows($koneksi);
+	}
+
+	function hapuspendonor($data)
+	{
+		global $koneksi;
+
+		mysqli_query($koneksi,$data);
+
+		return mysqli_affected_rows($koneksi);
+	}
+
+	function tampilujisaring($data)
+	{
+		global $koneksi;
+
+		$result 	= mysqli_query($koneksi,$data);
+
+		$rows 		= [];
+		while ($row =mysqli_fetch_assoc($result)) 
+		{
+			$rows[]	= $row;
+		}
+
+		return $rows;
+	}
+
+	function tampilstokdarah($data)
+	{
+		global $koneksi;
+
+		$result 	= mysqli_query($koneksi,$data);
+
+		$rows 		= [];
+
+		while ($row = mysqli_fetch_assoc($result)) 
+		{
+			$rows[] = $row;
+		}
+
+		return $rows;
+	}
+
+	function tambahstokdarah($data)
+	{
+		global $koneksi;
+
+		$komponen 	= htmlspecialchars($data['komponen']);
+		$a 			= htmlspecialchars($data['a']);
+		$b 			= htmlspecialchars($data['b']);
+		$ab 		= htmlspecialchars($data['ab']);
+		$o 			= htmlspecialchars($data['o']);
+
+		$query 		= "INSERT INTO stokdarah VALUES ('','$komponen',$a,$b,$ab,$o)";
+
+		mysqli_query($koneksi,$query);
+
+		return mysqli_affected_rows($koneksi);
+	}
+
+	function ubahstokdarah($data)
+	{
+		global $koneksi;
+		$id 		= $data['id'];
+		$komponen 	= htmlspecialchars($data['komponen']);
+		$a 			= htmlspecialchars($data['a']);
+		$b 			= htmlspecialchars($data['b']);
+		$ab 		= htmlspecialchars($data['ab']);
+		$o 			= htmlspecialchars($data['o']);
+
+		$query = "UPDATE stokdarah SET komponenstokdarah = '$komponen',
+					goldaa 	= $a,
+					goldab 	= $b,
+					goldaab = $ab,
+					goldao 	= $o
+					WHERE idstokdarah = $id";
+
+		mysqli_query($koneksi,$query);
+
+		return mysqli_affected_rows($koneksi);
+	}
+
+	function hapusstokdarah($data)
+	{
+		global $koneksi;
+
+		mysqli_query($koneksi,$data);
+		
+		return mysqli_affected_rows($koneksi);
+	}
+
+	function tampilparamedis($data)
+	{
+		global $koneksi;
+
+		$result  	= mysqli_query($koneksi,$data);
+
+		$rows 		= [];
+
+		while($row  = mysqli_fetch_assoc($result))
+		{
+			$rows[] = $row;
+		}
+
+		return $rows;
 	}
 ?>

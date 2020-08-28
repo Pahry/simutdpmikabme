@@ -35,18 +35,9 @@
 
           <li class="nav-item">
             <a href="dataujisaring.php" class="nav-link">
-              <i class="nav-icon fas fa-book medical"></i>
+              <i class="nav-icon fas fa-capsules"></i>
               <p>
                 Data Uji Saring Darah
-              </p>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a href="datastokdarahsementara.php" class="nav-link">
-              <i class="nav-icon fas fa-book medical"></i>
-              <p>
-                Data Stok Darah Sementara
               </p>
             </a>
           </li>

@@ -1,3 +1,13 @@
+<?php  
+
+  include 'functions.php';
+  global $koneksi;
+  $pendonor   = tampilpendonor("SELECT pendonor.namapendonor,
+              pendonor.goldapendonor, pendonor.nomorkantongpendonor, pendonor.hbpendonor 
+              FROM pendonor");
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,63 +66,97 @@
       <div class="container-fluid">
         
       <form>
-        <div class="form-group">
-          <label for="tanggalujisaring">Tanggal Uji Saring</label>
-          <input type="date" class="form-control" id="tanggalujisaring" name="tanggalujisaring">
+
+        <div class="form-group row">
+          <label for="tanggalujisaring" class="col-sm-2 col-form-label">Tanggal Uji Saring</label>
+          <div class="col-sm-8">
+            <input type="date" class="form-control" id="tanggalujisaring" name="tanggalujisaring">
+          </div>
         </div>
-        <div class="form-group">
-          <label for="nomorkantongdarah">Nomor Kantong Darah</label>
-          <input type="text" name="nomorkantongdarah" id="nomorkantongdarah" class="form-control">
+
+        <div class="form-group row" id="">
+          <label for="nomorkantong" class="col-sm-2 col-form-label">Nomor Kantong Darah</label>
+          <div class="col-sm-8">
+            <input type="text" name="nomorkantongdarah" id="nomorkantongdarah" class="form-control" value="">
+          </div>
         </div>
-        <div class="form-group">
-          <label for="namapendonor">Nama Pendonor</label>
-          <input type="text" class="form-control" id="namapendonor">
+
+            <div class="form-group row" id="livesearch">
+              <label class="col-sm-2 col-form-label"></label>
+              <div class="col-sm-8">
+                <input type="text" name="nomorkantongdarah"  class="form-control" value="">
+              </div>
+            </div>
+
+
+        <div class="form-group row">
+          <label for="namapendonor" class="col-sm-2 col-form-label">Nama Pendonor</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" id="namapendonor" name="namapendonor" value="">
+
+          </div>
         </div>
-        <div class="form-group">
-          <label for="jeniskelamin">Jenis Kelamin</label>
-          <select class="form-control" id="jeniskelamin">
-            <option>Laki-laki</option>
-            <option>Perempuan</option>
-          </select>
+
+        <div class="form-group row">
+          <label for="jeniskelamin" class="col-sm-2 col-form-label">Jenis Kelamin</label>
+            <div class="col-sm-8">
+              <select class="form-control" id="jeniskelamin">
+                <option>Laki-laki</option>
+                <option>Perempuan</option>
+              </select>
+            </div>
         </div>
-        <div class="form-group">
-          <label for="umur">Umur</label>
-          <input type="number" name="umur" id="umur" class="form-control">
+
+        <div class="form-group row">
+          <label for="umur" class="col-sm-2 col-form-label">Umur</label>
+          <div class="col-sm-8">
+            <input type="number" name="umur" id="umur" class="form-control">
+          </div>
         </div>
-        <div class="form-group">
-          <label for="golongandarah">Golongan Darah</label>
-          <select class="form-control" id="golongandarah">
-            <option>A (+)</option>
-            <option>B (+)</option>
-            <option>AB (+)</option>
-            <option>O (+)</option>
-          </select>
+
+        <div class="form-group row">
+          <label for="golongandarah" class="col-sm-2 col-form-label">Golongan Darah</label>
+          <div class="col-sm-8">
+            <select class="form-control" id="golongandarah">
+              <option>A (+)</option>
+              <option>B (+)</option>
+              <option>AB (+)</option>
+              <option>O (+)</option>
+            </select>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="komponen">Komponen</label>
-          <select class="form-control" id="komponen">
-            <option>PRC</option>
-            <option>TC</option>
-            <option>WB</option>
-          </select>
+
+        <div class="form-group row">
+          <label for="komponen" class="col-sm-2 col-form-label">Komponen</label>
+          <div class="col-sm-8">
+            <select class="form-control" id="komponen">
+              <option>PRC</option>
+              <option>TC</option>
+              <option>WB</option>
+            </select>
+          </div>
         </div>
+
         <div class="form-group">
           <div class="form-check form-check-inline mt-3">
             <strong class="mr-4">Crossmatching</strong>
               <input class="form-check-input ml-5" type="radio" name="inlineRadioOptions" id="cocok" value="cocok">
               <label class="form-check-label" for="cocok">Cocok</label>
           </div>
+
           <div class="form-check form-check-inline ml-3">
             <input class="form-check-input" type="radio" name="inlineRadioOptions" id="tidakcocok" value="tidakcocok">
             <label class="form-check-label" for="tidakcocok">Tidak Cocok</label>
           </div>
         </div>
+
         <div class="form-group">
           <div class="form-check form-check-inline mt-3">
             <strong class="mr-4">Pemeriksaan HIV</strong>
               <input class="form-check-input ml-5" type="radio" name="inlineRadioOptions" id="negatifhiv" value="negatifhiv">
               <label class="form-check-label" for="negatifhiv">Negatif (-)</label>
           </div>
+
           <div class="form-check form-check-inline ml-3">
             <input class="form-check-input" type="radio" name="inlineRadioOptions" id="positifhiv" value="positifhiv">
             <label class="form-check-label" for="positifhiv">Positif (+)</label>
@@ -229,5 +273,7 @@
 <script src="dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+<!-- Live Search -->
+<script src="livesearch.js"></script>
 </body>
 </html>

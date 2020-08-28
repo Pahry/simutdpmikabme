@@ -65,7 +65,7 @@
       <div class="container-fluid">
         <div class="card">
           <div class="card-header">
-            <a class="btn btn-success mt-5" href="tambahpetugasutdpmi.php"><i class="fas fa-plus"></i> Tambah Data Petugas UTD PMI</a>
+            <a class="btn btn-success" href="tambahpetugasutdpmi.php"><i class="fas fa-plus"></i> Tambah Data Petugas UTD PMI</a>
           </div>
           <div class="card-body">
             <table id="example1" class="table table-striped table-bordered">

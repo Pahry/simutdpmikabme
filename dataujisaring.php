@@ -1,3 +1,16 @@
+<?php  
+  include 'functions.php';
+
+  $tampil   = tampilujisaring("SELECT pendonor.namapendonor,
+              pendonor.goldapendonor, pendonor.nomorkantongpendonor, ujisaringdarah.hiv,
+              ujisaringdarah.hcv, ujisaringdarah.hbsag, ujisaringdarah.syphilis, 
+              ujisaringdarah.malaria, pendonor.hbpendonor, ujisaringdarah.crossmatching 
+              FROM ujisaringdarah
+              INNER JOIN pendonor
+              ON ujisaringdarah.idpendonor=pendonor.idpendonor");
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,7 +39,11 @@
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 </head>
+
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
@@ -54,107 +71,69 @@
       
       <!-- /.container-fluid -->
       <div class="container-fluid">
-        <a class="btn btn-danger" href="tambahujisaring.php"><i class="fas fa-plus"></i> Uji Saring</a>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">No</th>
-              <th scope="col">Nama Pendonor</th>
-              <th scope="col">Golongan Darah</th>
-              <th scope="col">Nomor Kantong</th>
-              <th scope="col">Crossmatching</th>
-              <th scope="col">HIV</th>
-              <th scope="col">HCV</th>
-              <th scope="col">HbSAg</th>
-              <th scope="col">Syphilis</th>
-              <th scope="col">Malaria</th>
-              <th scope="col">HB</th>
-              <th scope="col">Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Pendonor A</td>
-              <td>A (+)</td>
-              <td>123456</td>
-              <td>cocok</td>
-              <td>(-) Negatif</td>
-              <td>(-) Negatif</td>
-              <td>(-) Negatif</td>
-              <td>(-) Negatif</td>
-              <td>(-) Negatif</td>
-              <td>13,0</td>
-              <td>
-                <a class="btn btn-warning" href="#"><i class="far fa-eye"></i> Detail</a>
-                <a class="btn btn-primary" href="ubahujisaring.php"><i class="fas fa-edit"></i> Ubah</a>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Pendonor B</td>
-              <td>B (+)</td>
-              <td>223457</td>
-              <td>cocok</td>
-              <td>(-) Negatif</td>
-              <td>(-) Negatif</td>
-              <td>(-) Negatif</td>
-              <td>(-) Negatif</td>
-              <td>(-) Negatif</td>
-              <td>14,0</td>
-              <td>
-                <a class="btn btn-warning" href="#"><i class="far fa-eye"></i> Detail</a>
-                <a class="btn btn-primary" href="ubahujisaring.php"><i class="fas fa-edit"></i> Ubah</a>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>Pendonor C</td>
-              <td>AB (+)</td>
-              <td>812345</td>
-              <td>cocok</td>
-              <td>(-) Negatif</td>
-              <td>(-) Negatif</td>
-              <td>(-) Negatif</td>
-              <td>(-) Negatif</td>
-              <td>(-) Negatif</td>
-              <td>14,0</td>
-              <td>  
-                <a class="btn btn-warning" href="#"><i class="far fa-eye"></i> Detail</a>
-                <a class="btn btn-primary" href="ubahujisaring.php"><i class="fas fa-edit"></i> Ubah</a>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">4</th>
-              <td>Pendonor D</td>
-              <td>O (+)</td>
-              <td>912345</td>
-              <td>cocok</td>
-              <td>(-) Negatif</td>
-              <td>(-) Negatif</td>
-              <td>(-) Negatif</td>
-              <td>(-) Negatif</td>
-              <td>(-) Negatif</td>
-              <td>14,0</td>
-              <td>  
-                <a class="btn btn-warning" href="#"><i class="far fa-eye"></i> Detail</a>
-                <a class="btn btn-primary" href="ubahujisaring.php"><i class="fas fa-edit"></i> Ubah</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
 
-      </div>
-    </section>
-    <!-- /.content -->
+        <div class="card">
+
+          <div class="card-header">
+            <a class="btn btn-success" href="tambahujisaring.php"><i class="fas fa-plus"></i> Tambah Uji Saring</a>
+          </div><!-- Tutup Card Header -->
+
+          <div class="card-body">
+
+            <table id="example1" class="table table-striped">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Nama</th>
+                  <th>HIV</th>
+                  <th>HCV</th>
+                  <th>HbSAg</th>
+                  <th>Syphilis</th>
+                  <th>Malaria</th>
+                  <th>HB</th>
+                  <th>Crossmatching</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php $no=1; foreach ($tampil as $tpl): ?>
+                  <tr>
+                    <th><?php echo $no; $no++; ?></th>
+                    <td><?php echo $tpl['namapendonor'] ?></td>
+                    <td><?php echo $tpl['hiv']; ?></td>
+                    <td><?php echo $tpl['hcv']; ?></td>
+                    <td><?php echo $tpl['hbsag']; ?></td>
+                    <td><?php echo $tpl['syphilis']; ?></td>
+                    <td><?php echo $tpl['malaria']; ?></td>
+                    <td><?php echo $tpl['hbpendonor']; ?></td>
+                    <td><?php echo $tpl['crossmatching']; ?></td>
+                    <td>
+                      <a class="btn btn-sm btn-warning" href="#"><i class="far fa-eye"></i> Detail</a>
+                      <a class="btn btn-sm btn-primary" href="ubahujisaring.php"><i class="fas fa-edit"></i> Ubah</a>
+                      <a class="btn btn-sm btn-danger" href="ubahujisaring.php"><i class="fas fa-edit"></i> Hapus</a>
+                    </td>
+                  </tr>
+                <?php endforeach; ?>
+              </tbody>
+            </table>
+
+          </div> <!-- Tutup Card Body -->
+
+        </div> <!-- Tutup Card -->
+      
+      </div> <!-- Tutup Container Fluid -->
+
+    </section>     <!-- /.content -->
+
   </div>
   <!-- /.content-wrapper -->
   
   <?php include 'footer.php'; ?>
 
   <?php include 'controlsidebar.php'; ?>
-</div>
-<!-- ./wrapper -->
+
+</div> <!-- ./wrapper -->
+
 
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
@@ -190,5 +169,27 @@
 <script src="dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+<!-- DataTables -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
 </body>
 </html>

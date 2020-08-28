@@ -1,34 +1,34 @@
 <?php  
+  
   include 'functions.php';
 
-  $idpetugasutdpmi = $_GET['id'];
- 
-  $ptgs = tampilpetugas("SELECT * FROM petugasutdpmi WHERE idpetugasutdpmi = $idpetugasutdpmi")[0];
+  $id     = $_GET['id'];   
+  
+  $tampil =  tampilstokdarah("SELECT * FROM stokdarah WHERE idstokdarah=$id")[0];
 
-  // Cek apakah tombol submit sudah diklik atau belum
-  if ( isset($_POST["submit"])) 
-  {   
-    // jalankan fungsi ubah
-    // cek apakah data berhasil diubah atau tidak
-    if (ubahpetugasutdpmi($_POST) > 0 ) 
+  $stok   = tampilstokdarah("SELECT * FROM stokdarah");
+
+
+  if (isset($_POST['submit'])) 
+  { 
+    if (ubahstokdarah($_POST) > 0 ) 
     {
       echo "<script>
               alert('Data berhasil diubah');
-              document.location.href = 'datapetugasutdpmi.php';
+              document.location.href = 'datastokdarah.php';
             </script>" ;
-    }else
+    }
+      else
     {
       echo "<script>
               alert('Data gagal diubah');
-              document.location.href = 'datapetugasutdpmi.php';
+              document.location.href = 'datastokdarah.php';
             </script>" ;
+            
+      echo mysqli_error($koneksi);
     }
   }
-
-
-
 ?> 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -73,7 +73,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Ubah Data Petugas UTD PMI</h1>
+            <h1 class="m-0 text-dark">Ubah Stok Darah</h1>
           </div><!-- /.col -->
           <!-- /.col -->
         </div><!-- /.row -->
@@ -87,54 +87,53 @@
       <!-- /.container-fluid -->
       <div class="container-fluid">
         
-      <form action="" method="post">
-      
-        <div class="form-group">  
-          <input type="hidden" name="idpetugasutdpmi" value="<?php echo $ptgs['idpetugasutdpmi']; ?>">
-        </div>
+      <form action="" method="POST">
+
+        <input type="hidden" name="id" value="<?=$tampil['idstokdarah'];?>">
 
         <div class="form-group row">
-          <label for="namappetugasutdpmi" class="col-sm-2 col-form-label">Nama Petugas</label>
+          <label for="komponen" class="col-sm-2 col-form-label">Komponen Darah</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="namapetugasutdpmi" name="namapetugasutdpmi" placeholder="Masukkan Nama Lengkap" value="<?php echo $ptgs['namapetugasutdpmi']; ?>" required>
-          </div>
-        </div>
-
-        <div class="form-group row">
-          <label for="tanggallahir" class="col-sm-2 col-form-label">Tanggal Lahir</label>
-          <div class="col-sm-8">
-            <input type="date" name="tanggallahir" id="tanggallahir" class="form-control" value="<?php echo $ptgs['tanggallahirpetugasutdpmi']; ?>" required>
-          </div>
-        </div>
-
-        <div class="form-group row">
-          <label for="golongandarah" class="col-sm-2 col-form-label">Golongan Darah</label>
-          <div class="col-sm-8">
-            <select class="form-control" id="golongandarah" name="golongandarah">
-              <option value="A (+)" <?php if($ptgs['goldapetugasutdpmi'] == "A (+)")  echo "selected" ?>>A (+)</option>
-              <option value="B (+)" <?php if($ptgs['goldapetugasutdpmi'] == "B (+)")  echo "selected" ?>>B (+)</option>
-              <option value="AB (+)"<?php if($ptgs['goldapetugasutdpmi'] == "AB (+)") echo "selected" ?>>AB (+)</option>
-              <option value="O (+)" <?php if($ptgs['goldapetugasutdpmi'] == "O (+)")  echo "selected" ?>>O (+)</option>
+            <select class="form-control" id="komponen" name="komponen" disabled>
+              <?php foreach ($stok as $s): ?>
+                <option value="<?= $s['komponenstokdarah'];?>" <?php if($tampil['komponenstokdarah'] == $s['komponenstokdarah']) echo 'selected' ?> >
+                  <?php echo $s['komponenstokdarah']; ?></option>
+              <?php endforeach ?>
             </select>
           </div>
         </div>
 
         <div class="form-group row">
-          <label for="pendidikan" class="col-sm-2 col-form-label">Pendidikan</label>
+          <label for="a" class="col-sm-2 col-form-label">Golda A (+)</label>
           <div class="col-sm-8">
-            <input type="text" name="pendidikan" id="pendidikan" class="form-control" value="<?php echo $ptgs['pendidikanpetugasutdpmi']; ?>" required>
+            <input type="number" name="a" id="a" class="form-control" value="<?= $tampil['goldaa'];?>" required>
           </div>
         </div>
 
         <div class="form-group row">
-          <label for="jabatan" class="col-sm-2 col-form-label">Jabatan</label>
+          <label for="b" class="col-sm-2 col-form-label">Golda B (+)</label>
           <div class="col-sm-8">
-            <input type="text" name="jabatan" id="jabatan" class="form-control" value="<?php echo $ptgs['jabatanpetugasutdpmi']; ?>" required>
+            <input type="number" name="b" id="b" class="form-control" value="<?= $tampil['goldab'];?>" required>
           </div>
         </div>
-        
-      <button class="btn btn-success" type="submit" name="submit"><i class="fas fa-plus"></i> Ubah Data</button>
-      <a class="btn btn-danger" href="datapetugasutdpmi.php"><i class="fas fa-backward"></i> Kembali</a>
+
+        <div class="form-group row">
+          <label for="ab" class="col-sm-2 col-form-label">Golda AB (+)</label>
+          <div class="col-sm-8">
+            <input type="number" name="ab" id="ab" class="form-control" value="<?= $tampil['goldaab'];?>" required>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="o" class="col-sm-2 col-form-label">Golda O (+)</label>
+          <div class="col-sm-8">
+            <input type="number" name="o" id="o" class="form-control" value="<?= $tampil['goldao'];?>" required>
+          </div>
+        </div>
+
+        <button class="btn btn-success" type="submit" name="submit"><i class="fas fa-plus"></i> Ubah Data</button>
+        <a class="btn btn-danger" href="datastokdarah.php"><i class="fas fa-backward"></i> Kembali</a>
+      </form>
 
 
       </div>

@@ -12,10 +12,9 @@
  
   $tampilpetugasaftapflebotomi = tampilflebotomi("SELECT flebotomi.idflebotomi, petugasutdpmi.namapetugasutdpmi FROM flebotomi INNER JOIN petugasutdpmi ON flebotomi.idpetugasutdpmi = petugasutdpmi.idpetugasutdpmi WHERE idflebotomi = $id")[0];
 
-  $tpl = tampilpetugas(
-    "SELECT idpetugasutdpmi,namapetugasutdpmi FROM petugasutdpmi");
+  $tpl = tampilpetugas("SELECT idpetugasutdpmi,namapetugasutdpmi FROM petugasutdpmi");
  
-
+  $medis = tampilparamedis("SELECT * FROM paramedis");
   if (isset($_POST['submit'])) 
   {
 
@@ -198,13 +197,25 @@
           </div>
         </div>
 
+        <div class="form-group row">  
+            <label for="paramedisflebotomi" class="col-sm-2 col-form-label">Dokter / Paramedis</label>
+            <div class="col-sm-8"> 
+              <select class="form-control" id="paramedisflebotomi" name="paramedisflebotomi" required>
+                <option>Pilih Dokter / Paramedis</option>
+                <?php foreach ($medis as $mds) :  ?>
+                  <option value="<?php echo $mds["idparamedis"]; ?>" <?php if($tampilflebotomi['idparamedis'] == $mds['idparamedis']) echo 'selected';?> ><?php echo $mds["namaparamedis"]; ?></option>
+                <?php endforeach ?>
+            </select>
+            </div>
+        </div>
+
         <h1 class="mt-3 text-dark">Data Petugas Aftap</h1>
 
         <div class="form-group row">
           <label for="idpetugasutdpmi" class="col-sm-2 col-form-label">Nama Petugas Aftap</label>
           <div class="col-sm-8">
             <select class="form-control" id="idpetugasutdpmi" name="idpetugasutdpmi" required>
-              <?php var_dump($tampilflebotomi['idpetugasutdpmi']); foreach ($tpl as $tpl): ?>
+              <?php foreach ($tpl as $tpl): ?>
                 <option value="<?= $tpl['idpetugasutdpmi']; ?>" <?php if($tampilflebotomi['idpetugasutdpmi'] == $tpl['idpetugasutdpmi']) echo "selected"; ?>>
                   <?= $tpl['namapetugasutdpmi']; ?>
                   </option>          

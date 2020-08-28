@@ -4,8 +4,9 @@
 
   global $koneksi;
 
-  $tampilflebotomi = tampilpetugas(
-    "SELECT idpetugasutdpmi,namapetugasutdpmi FROM petugasutdpmi");
+  $tampilflebotomi  = tampilpetugas("SELECT idpetugasutdpmi,namapetugasutdpmi FROM petugasutdpmi");
+  
+  $medis            = tampilparamedis("SELECT * FROM paramedis");
 
   if (isset($_POST['submit'])) 
   {
@@ -154,21 +155,21 @@
         <h2 class="mt-5 text-dark">Diisi oleh Petugas Pemeriksaan Pendahuluan</h2>
 
         <div class="form-group row">  
-            <label for="sysflebotomi" class="col-sm-2">Tekanan Darah Sistole</label>
+            <label for="sysflebotomi" class="col-sm-2 col-form-label">Tekanan Darah Sistole</label>
             <div class="col-sm-8"> 
                 <input type="text" class="form-control" name="sysflebotomi" id="sysflebotomi" required>
             </div>
         </div>
 
         <div class="form-group row">  
-            <label for="diaflebotomi" class="col-sm-2">Tekanan Darah Diastole</label>
+            <label for="diaflebotomi" class="col-sm-2 col-form-label">Tekanan Darah Diastole</label>
             <div class="col-sm-8"> 
                 <input type="text" class="form-control" name="diaflebotomi" id="diaflebotomi" required>
             </div>
         </div>  
 
         <div class="form-group row">  
-            <label for="hbflebotomi" class="col-sm-2">Kadar HB</label>
+            <label for="hbflebotomi" class="col-sm-2 col-form-label">Kadar HB</label>
             <div class="col-sm-8"> 
                 <input type="text" class="form-control" name="hbflebotomi" id="hbflebotomi">
             </div>
@@ -184,6 +185,18 @@
               <option value="O (+)">O (+)</option>
             </select>
           </div>
+        </div>
+
+        <div class="form-group row">  
+            <label for="paramedisflebotomi" class="col-sm-2 col-form-label">Dokter / Paramedis</label>
+            <div class="col-sm-8"> 
+              <select class="form-control" id="paramedisflebotomi" name="paramedisflebotomi" required>
+                <option>Pilih Dokter / Paramedis</option>
+                <?php foreach ($medis as $mds) :  ?>
+                  <option value="<?php echo $mds["idparamedis"]; ?>"><?php echo $mds["namaparamedis"]; ?></option>
+                <?php endforeach ?>
+            </select>
+            </div>
         </div>
 
         <h2 class="mt-5 text-dark">Data Petugas Aftap</h2>

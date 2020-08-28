@@ -1,3 +1,30 @@
+<?php  
+  
+  include 'functions.php';
+  $id           = $_GET['id'];
+  $petugas      = tampilpetugas("SELECT * FROM petugasutdpmi");
+  $paramedis    = tampilparamedis("SELECT * FROM paramedis");
+  $tampil       = tampilpendonor("SELECT * FROM pendonor WHERE idpendonor=$id")[0];
+
+
+  if (isset($_POST['submit'])) {
+    
+      if(ubahpendonor($_POST) > 0 )
+      {
+        echo "<script>
+                alert('Data Berhasil Diubah');
+                document.location.href = 'datapendonor.php';
+              </script>";
+      }else{
+        echo "<script>
+                alert('Data Gagal Diubah');
+                document.location.href = 'datapendonor.php';
+              </script>";
+              echo mysqli_error($koneksi);
+      }
+  }
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,77 +82,190 @@
       <!-- /.container-fluid -->
       <div class="container-fluid">
         
-      <form>
-        <div class="form-group">
-          <label for="namapendonor">Nama Pendonor</label>
-          <input type="text" class="form-control" id="namapendonor" placeholder="Masukkan Nama Lengkap Pendonor">
-        </div>
-        <div class="form-group">
-          <label for="tanggallahir">Tanggal Lahir</label>
-          <input type="date" class="form-control" id="tanggallahir">
-        </div>
-        <div class="form-group">
-          <label for="umur">Umur</label>
-          <input type="number" class="form-control" id="umur" min="17" max="60" placeholder="17-60 tahun">
-        </div>
-        <div class="form-group">
-          <label for="jk">Jenis Kelamin</label>
-          <select class="form-control" id="jk">
-            <option>Laki-laki</option>
-            <option>Perempuan</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="golongandarah">Golongan Darah</label>
-          <select class="form-control" id="golongandarah">
-            <option>A</option>
-            <option>B</option>
-            <option>AB</option>
-            <option>O</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="nomortelepon">Nomor Telepon</label>
-          <input type="text" class="form-control" name="nomortelepon" id="nomortelepon">
-        </div>
-        <div class="form-group">
-          <label for="alamat">Alamat</label>
-          <textarea class="form-control" id="alamat" rows="3"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="donorke">Donor Ke</label>
-          <input type="number" class="form-control" id="donorke">
-        </div>
-        <div class="form-group">
-          <label for="nomortelepon">Nomor Telepon</label>
-          <input type="text" class="form-control" name="nomortelepon" id="nomortelepon"></input>
+      <form method="post" action="">
+
+        <input type="hidden" name="idpendonor" value="<?= $tampil['idpendonor']; ?>">
+
+        <div class="form-group row">
+          <label for="tanggaldonor" class="col-sm-2 col-form-label">Tanggal Donor</label>
+          <div class="col-sm-8">
+            <input type="date" class="form-control" name="tanggaldonor" id="tanggaldonor" value="<?= $tampil['tanggalpendonor'];?>" required>
+          </div>
         </div>
 
-        <h1 class="mt-3 text-dark">Data Petugas Aftap</h1>
-        <div class="form-group">
-          <label for="namapetugasaftap">Nama Petugas Aftap</label>
-          <select class="form-control" id="namapetugasaftap">
-            <option>Petugas A</option>
-            <option>Petugas B</option>
-            <option>Petugas C</option>
-            <option>Petugas D</option>
-          </select>
+        <div class="form-group row">
+          <label for="tempatdonor" class="col-sm-2 col-form-label">Tempat Donor Darah</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" id="tempatdonor" name="tempatdonor" value="<?= $tampil['tempatpenyumbanganpendonor'];?>" required>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="sebanyak">Sebanyak</label>
-          <select class="form-control" id="sebanyak">
-            <option>250 cc</option>
-            <option>350 cc</option>
-            <option>450 cc</option>
-          </select>
+
+        <div class="form-group row">
+          <label for="nomorktp" class="col-sm-2 col-form-label">Nomor KTP</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" id="nomorktp" name="nomorktp" value="<?= $tampil['nomorktppendonor'];?>" placeholder="Masukkan Nomor KTP" required>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="nomorkantong">Nomor Kantong</label>
-          <input type="text" name="nomorkantong" class="form-control" id="nomorkantong">
+
+        <div class="form-group row">
+          <label for="namapendonor" class="col-sm-2 col-form-label">Nama Pendonor</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" id="namapendonor" name="namapendonor" value="<?= $tampil['namapendonor'];?>" placeholder="Masukkan Nama Lengkap Pendonor" required>
+          </div>
         </div>
-      </form>
-      <button class="btn btn-success"><i class="fas fa-plus"></i> Ubah Data Pendonor</button>
+
+        <div class="form-group row">
+          <label for="jk" class="col-sm-2 col-form-label">Jenis Kelamin</label>
+          <div class="col-sm-8">
+            <select class="form-control" name="jeniskelamin" id="jk">
+              <option value="Laki-laki" <?php if($tampil['jeniskelaminpendonor'] == 'Laki-laki') echo 'selected';?> >Laki-laki</option>
+              <option value="Perempuan" <?php if($tampil['jeniskelaminpendonor'] == 'Perempuan') echo 'selected';?>>Perempuan</option>
+            </select>
+          </div>
+        </div>
+  
+        <div class="form-group row">
+          <label for="alamat" class="col-sm-2 col-form-label">Alamat Rumah</label>
+          <div class="col-sm-8">
+            <textarea class="form-control" name="alamat" id="alamat" rows="3" required><?= $tampil['alamatpendonor'];?></textarea>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="nomortelepon" class="col-sm-2 col-form-label">Nomor Telepon</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" name="nomortelepon" id="nomortelepon" value="<?= $tampil['nomorteleponpendonor'];?>" required>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="pekerjaan" class="col-sm-2 col-form-label">Pekerjaan</label>
+          <div class="col-sm-8"> 
+              <input type="text" class="form-control" name="pekerjaan" id="pekerjaan" value="<?= $tampil['pekerjaanpendonor'];?>" required>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="tanggallahir" class="col-sm-2 col-form-label">Tanggal Lahir</label>
+          <div class="col-sm-8">
+            <input type="date" class="form-control" name="tanggallahir" id="tanggallahir" value="<?= $tampil['tanggallahirpendonor'];?>" required>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="umur" class="col-sm-2 col-form-label">Umur</label>
+          <div class="col-sm-8">
+            <input type="number" class="form-control" name="umur" id="umur" min="17" max="60" placeholder="17-60 tahun" value="<?= $tampil['umurpendonor'];?>" required>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="donorke" class="col-sm-2 col-form-label">Sekarang Donor Ke</label>
+          <div class="col-sm-8">
+            <input type="number" class="form-control" name="donorke" id="donorke" value="<?= $tampil['donorkependonor'];?>" required>
+          </div>
+        </div>
+
+        <h2 class="mt-5 text-dark">Diisi oleh Petugas Pemeriksaan Pendahuluan</h2>
+
+        <div class="form-group row">  
+            <label for="sys" class="col-sm-2 col-form-label">Tekanan Darah Sistole</label>
+            <div class="col-sm-8"> 
+                <input type="text" class="form-control" name="sys" id="sys" value="<?= $tampil['sistolependonor'];?>" required>
+            </div>
+        </div>
+
+        <div class="form-group row">  
+            <label for="dia" class="col-sm-2 col-form-label">Tekanan Darah Diastole</label>
+            <div class="col-sm-8"> 
+                <input type="text" class="form-control" name="dia" id="dia" value="<?= $tampil['diastolependonor'];?>" required>
+            </div>
+        </div>  
+
+        <div class="form-group row">  
+            <label for="hb" class="col-sm-2 col-form-label">Kadar HB</label>
+            <div class="col-sm-8"> 
+                <input type="text" class="form-control" name="hb" id="hb" value="<?= $tampil['hbpendonor'];?>" required>
+            </div>
+        </div>    
+
+        <div class="form-group row">
+          <label for="golongandarah" class="col-sm-2 col-form-label">Golongan Darah</label>
+          <div class="col-sm-8"> 
+            <select class="form-control" id="golongandarah" name="golda" required>
+              <option value="A (+)"<?php if($tampil['goldapendonor'] == 'A (+)') echo 'selected';?>   >A (+)</option>
+              <option value="B (+)"<?php if($tampil['goldapendonor'] == 'B (+)') echo 'selected';?>   >B (+)</option>
+              <option value="AB (+)"<?php if($tampil['goldapendonor'] == 'AB (+)') echo 'selected';?> >AB (+)</option>
+              <option value="O (+)"<?php if($tampil['goldapendonor'] == 'O (+)') echo 'selected';?>   >O (+)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row">  
+            <label for="paramedis" class="col-sm-2 col-form-label">Dokter / Paramedis</label>
+            <div class="col-sm-8"> 
+              <select name="paramedis" class="form-control" id="namapetugasaftap">
+                  <option>Pilih Dokter / Paramedis</option>
+                  <?php foreach ($paramedis as $medis) : ?>
+                    <option value="<?= $medis['idparamedis'];?>" <?php if($tampil['idparamedis'] == $medis['idparamedis']) echo 'selected';?> ><?= $medis['namaparamedis']; ?></option>
+                  <?php endforeach ?>
+                </select>
+            </div>
+        </div>
+        
+        <h2 class="mt-5 text-dark">Data Petugas Aftap</h2>
+        <div class="form-group row">
+          <label for="namapetugasaftap" class="col-sm-2 col-form-label">Nama Petugas Aftap</label>
+          <div class="col-sm-8">
+            <select name="petugasaftap" class="form-control" id="namapetugasaftap">
+              <option>Pilih Petugas</option>
+              <?php foreach ($petugas as $ptgs) : ?>
+                <option value="<?= $ptgs['idpetugasutdpmi'];?>" <?php if($tampil['idpetugasutdpmi'] == $ptgs['idpetugasutdpmi']) echo 'selected';?> ><?= $ptgs['namapetugasutdpmi']; ?></option>
+              <?php endforeach ?>
+
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="nomorkantong" class="col-sm-2 col-form-label">Nomor Kantong</label>
+          <div class="col-sm-8">
+            <input type="text" name="nomorkantong" class="form-control" id="nomorkantong" value="<?= $tampil['nomorkantongpendonor'];?>">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="jeniskantong" class="col-sm-2 col-form-label">Jenis Kantong</label>
+          <div class="col-sm-8"> 
+              <input type="text" name="jeniskantong" class="form-control" id="jeniskantong" value="<?= $tampil['jeniskantongpendonor'];?>" required>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="sebanyak" class="col-sm-2 col-form-label">Sebanyak</label>
+          <div class="col-sm-8">
+              <input type="text" name="sebanyak" class="form-control" id="sebanyak" value="<?= $tampil['sebanyakpendonor'];?>">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="pengambilan" class="col-sm-2 col-form-label">Pengambilan</label>
+          <div class="col-sm-8"> 
+              <input type="text" name="pengambilan" class="form-control" id="pengambilan" value="<?= $tampil['pengambilanpendonor']; ?>" required>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="reaksi" class="col-sm-2 col-form-label">Reaksi</label>
+          <div class="col-sm-8"> 
+              <input type="text" name="reaksi" class="form-control" id="reaksi" value="<?= $tampil['reaksipendonor']; ?>" required>
+          </div>
+        </div>
+
+      <button class="btn btn-success" type="submit" name="submit" value="Submit"><i class="fas fa-plus"></i> Ubah Data Pendonor</button>
       <a class="btn btn-danger" href="datapendonor.php"><i class="fas fa-backward"></i> Kembali</a>
+      
+      </form>
 
       </div>
     </section>

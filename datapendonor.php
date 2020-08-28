@@ -104,8 +104,8 @@
                         <td><?= $tplpdnr['nomorkantongpendonor'];?></td>
                         <td>
                           <a class="btn btn-warning" href="#"><i class="far fa-eye"></i> Detail</a>
-                          <a class="btn btn-primary" href="ubahdonor.php"><i class="fas fa-edit"></i> Ubah</a>
-                          <button class="btn btn-danger"><i class="fas fa-trash"></i> Hapus</button>
+                          <a class="btn btn-primary" href="ubahdonor.php?id=<?= $tplpdnr['idpendonor'];?>"><i class="fas fa-edit"></i> Ubah</a>
+                          <a class="btn btn-danger" href="hapusdonor.php?id=<?= $tplpdnr['idpendonor'];?>" onclick="return confirm('Apakah anda yakin ?')"><i class="fas fa-trash"></i> Hapus</a>
                         </td>
                       </tr>
 

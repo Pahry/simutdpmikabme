@@ -1,3 +1,12 @@
+<?php  
+  
+  include 'functions.php';
+
+  $tampil = tampilstokdarah("SELECT * FROM stokdarah");
+
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,6 +35,7 @@
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -56,51 +66,46 @@
       
       <!-- /.container-fluid -->
       <div class="container-fluid"> 
+        <div class="card">
+          
+          <div class="card-header">
+            <a href="tambahstokdarah.php" class="btn btn-success disabled"><i class="fas fa-plus"></i> Tambah Stok Darah</a>
+          </div><!-- Tutup Card Header -->
+          
+          <div class="card-body">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Komponen</th>
+                  <th>A (+)</th>
+                  <th>B (+)</th>
+                  <th>AB (+)</th>
+                  <th>O (+)</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php $no=1; foreach ($tampil as $tpl): ?>
+                  <tr>
+                    <th><?php echo $no; $no++; ?></th>
+                    <td><?php echo $tpl['komponenstokdarah']; ?></td>
+                    <td><?php echo $tpl['goldaa']; ?></td>
+                    <td><?php echo $tpl['goldab']; ?></td>
+                    <td><?php echo $tpl['goldaab']; ?></td>
+                    <td><?php echo $tpl['goldao']; ?></td>
+                    <td>
+                      <a href="ubahstokdarah.php?id=<?= $tpl['idstokdarah']?>" class="btn btn-primary"><i class="fas fa-edit"></i> Ubah</a>
+                      <a href="hapusstokdarah.php?id=<?= $tpl['idstokdarah']?>" class="btn btn-danger" onclick="return confirm('Apakah Anda Yakin ?')"> <i class="fas fa-trash"></i> Hapus</a>
+                    </td>
+                  </tr>
+                <?php endforeach ?>
+              </tbody>
+            </table>
+          
+          </div> <!-- Tutup Card Body -->
 
-        <table class="table table-striped mt-3">
-          <thead>
-            <tr>
-              <th scope="col">No</th>
-              <th scope="col">Komponen</th>
-              <th scope="col">A</th>
-              <th scope="col">B</th>
-              <th scope="col">AB</th>
-              <th scope="col">O</th>
-              <th scope="col">Jumlah</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>PRC</td>
-              <td>5</td>
-              <td>4</td>
-              <td>2</td>
-              <td>2</td>
-              <td>13</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>TC</td>
-              <td>5</td>
-              <td>2</td>
-              <td>3</td>
-              <td>1</td>
-              <td>11</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>WB</td>
-              <td>4</td>
-              <td>2</td>
-              <td>3</td>
-              <td>3</td>
-              <td>12</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <button class="btn btn-danger"><i class="fas fa-print"></i> Cetak</button>
+        </div> <!-- Tutup Card -->
         
 
       </div>
