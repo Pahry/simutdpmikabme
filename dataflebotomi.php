@@ -1,12 +1,18 @@
-
 <?php 
-include 'functions.php';
+  
+  session_start();
+  
+  if(!isset($_SESSION["login"]))
+  
+  header("location: ../login.php");
 
-$tampilflebotomi = tampilflebotomi(
-  "SELECT petugasutdpmi.namapetugasutdpmi, flebotomi.idflebotomi,flebotomi.tanggaldonorflebotomi, flebotomi.namaflebotomi,flebotomi.umurflebotomi,flebotomi.nomorteleponflebotomi, flebotomi.nomorkantongflebotomi,flebotomi.umurflebotomi,flebotomi.goldaflebotomi,flebotomi.alamatflebotomi
-  FROM flebotomi
-  INNER JOIN petugasutdpmi ON flebotomi.idpetugasutdpmi = petugasutdpmi.idpetugasutdpmi");
- ?>
+  include 'functions.php';
+
+  $tampilflebotomi = tampilflebotomi(
+    "SELECT petugasutdpmi.namapetugasutdpmi, flebotomi.idflebotomi,flebotomi.tanggaldonorflebotomi, flebotomi.namaflebotomi,flebotomi.umurflebotomi,flebotomi.nomorteleponflebotomi, flebotomi.nomorkantongflebotomi,flebotomi.umurflebotomi,flebotomi.goldaflebotomi,flebotomi.alamatflebotomi
+    FROM flebotomi
+    INNER JOIN petugasutdpmi ON flebotomi.idpetugasutdpmi = petugasutdpmi.idpetugasutdpmi");
+?>
 
 <!DOCTYPE html>
 <html>

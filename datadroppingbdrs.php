@@ -1,7 +1,14 @@
-<?php  
-  include 'functions.php';
+<?php 
+  
+  session_start();
+  
+  if(!isset($_SESSION["login"]))
+  
+    header("location: ../login.php"); 
 
-  $tampildroppingbdrs = tampildroppingbdrs("
+    include 'functions.php';
+
+    $tampildroppingbdrs = tampildroppingbdrs("
             SELECT droppingbdrs.iddroppingbdrs, droppingbdrs.tanggaldropping, pasien.namapasien, pasien.goldapasien,pasien.komponenpasien, droppingbdrs.namapenerimadroppingbdrs  
             FROM droppingbdrs
             INNER JOIN pasien 

@@ -1,7 +1,17 @@
 <?php
+
+  session_start();
+  
+  if(!isset($_SESSION["login"]))
+  
+  header("location: ../login.php");
+
   include 'functions.php';
+
   $id     = $_GET['id'];
+  
   $petugas = tampilpetugas("SELECT * FROM petugasutdpmi");
+  
   $tampil = tampildroppingselainbdrs("SELECT 
             droppingselainbdrs.iddropping, droppingselainbdrs.tanggaldropping,droppingselainbdrs.jenisjaminandropping,droppingselainbdrs.dokterdropping,droppingselainbdrs.zaaldropping,droppingselainbdrs.jumlahkantongdropping,droppingselainbdrs.tanggaldropping,droppingselainbdrs.jamdropping, droppingselainbdrs.namapetugasrs, pasien.namapasien,pasien.rumahsakitpasien,pasien.goldapasien,pasien.komponenpasien,petugasutdpmi.idpetugasutdpmi,petugasutdpmi.namapetugasutdpmi
             FROM droppingselainbdrs
@@ -10,7 +20,7 @@
             JOIN petugasutdpmi 
             ON droppingselainbdrs.idpetugasutdpmi = petugasutdpmi.idpetugasutdpmi
             WHERE iddropping=$id")[0];
-var_dump($tampil['idpetugasutdpmi']);
+
 ?>  
 <!DOCTYPE html>
 <html>

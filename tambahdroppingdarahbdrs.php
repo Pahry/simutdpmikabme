@@ -1,4 +1,11 @@
-<?php  
+<?php 
+
+  session_start();
+  
+  if(!isset($_SESSION["login"]))
+  
+  header("location: ../login.php");
+   
   include 'functions.php';
 
   $pasien   = tampilpasien("SELECT * FROM pasien");

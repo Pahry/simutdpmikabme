@@ -1,4 +1,12 @@
-<?php include 'functions.php'; 
+<?php 
+
+  session_start();
+  
+  if(!isset($_SESSION["login"]))
+  
+  header("location: ../login.php");
+
+  include 'functions.php'; 
 
   $tampilpetugas = tampilpetugas("SELECT * FROM petugasutdpmi");
   

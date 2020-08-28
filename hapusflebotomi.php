@@ -1,6 +1,12 @@
 <?php  
 
-include 'functions.php';
+  	session_start();
+  
+  	if(!isset($_SESSION["login"]))
+  
+  	header("location: ../login.php");
+
+	include 'functions.php';
 
 	if(hapusflebotomi($_GET['id']) > 0 )
 	{

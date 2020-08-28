@@ -1,3 +1,5 @@
+
+
 <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -12,10 +14,10 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="dist/img/bgpolos.png" class="img-circle elevation-2" alt="Foto Profil Administrator">
+          <img src="dist/img/avatar3.png" class="img-circle elevation-2" alt="Foto Profil Administrator">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Pahry</a>
+          <a href="#" class="d-block">Administrator</a>
         </div>
       </div>
 
@@ -92,6 +94,15 @@
               <i class="nav-icon far fa-handshake"></i>
               <p>
                 Data Dropping Selain BDRS
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="logout.php" class="nav-link">
+              <i class="nav-icon fas fa-window-close"></i>
+              <p>
+                Logout
               </p>
             </a>
           </li>

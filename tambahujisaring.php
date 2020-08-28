@@ -1,7 +1,15 @@
 <?php  
 
+  session_start();
+  
+  if(!isset($_SESSION["login"]))
+  
+  header("location: ../login.php");
+
   include 'functions.php';
+
   global $koneksi;
+  
   $pendonor   = tampilpendonor("SELECT pendonor.namapendonor,
               pendonor.goldapendonor, pendonor.nomorkantongpendonor, pendonor.hbpendonor 
               FROM pendonor");

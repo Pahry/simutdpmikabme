@@ -1,5 +1,11 @@
 <?php  
+
+  session_start();
   
+  if(!isset($_SESSION["login"]))
+  
+  header("location: ../login.php");
+ 
   include 'functions.php';
 
   $tampil = tampilstokdarah("SELECT * FROM stokdarah");
