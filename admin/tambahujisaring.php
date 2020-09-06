@@ -1,9 +1,47 @@
+<?php  
+
+  session_start();
+  
+  if(!isset($_SESSION["login"]))
+  
+  header("location: ../login.php");
+
+  include 'functions.php';
+
+  global $koneksi;
+  
+  $tampilpetugas   = tampilpetugas("SELECT idpetugasutdpmi,namapetugasutdpmi FROM petugasutdpmi");
+  $tampilpendonor  = tampilpendonor("SELECT idpendonor, nomorkantongpendonor FROM pendonor");
+
+  if (isset($_POST['submit'])) {
+
+      if(tambahujisaring($_POST) > 0)
+      {
+        echo    "<script>
+                  alert('Data Berhasil Ditambahkan');
+                  document.location.href = 'dataujisaring.php';
+                </script>";
+      }else
+      {
+        echo    "<script>
+                  alert('Data Gagal Ditambahkan');
+                  document.location.href = 'dataujisaring.php';
+                </script>";
+        
+        echo mysqli_error($koneksi);
+      }
+
+  }
+
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>SI PD UTD PMI KAB. MUARA ENIM</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -27,7 +65,9 @@
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
+
 <body class="hold-transition sidebar-mini layout-fixed">
+
 <div class="wrapper">
 
   <?php include 'navbar.php'; ?>
@@ -55,137 +95,138 @@
       <!-- /.container-fluid -->
       <div class="container-fluid">
         
-      <form>
-        <div class="form-group">
-          <label for="tanggalujisaring">Tanggal Uji Saring</label>
-          <input type="date" class="form-control" id="tanggalujisaring" name="tanggalujisaring">
-        </div>
-        <div class="form-group">
-          <label for="nomorkantongdarah">Nomor Kantong Darah</label>
-          <input type="text" name="nomorkantongdarah" id="nomorkantongdarah" class="form-control">
-        </div>
-        <div class="form-group">
-          <label for="namapendonor">Nama Pendonor</label>
-          <input type="text" class="form-control" id="namapendonor">
-        </div>
-        <div class="form-group">
-          <label for="jeniskelamin">Jenis Kelamin</label>
-          <select class="form-control" id="jeniskelamin">
-            <option>Laki-laki</option>
-            <option>Perempuan</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="umur">Umur</label>
-          <input type="number" name="umur" id="umur" class="form-control">
-        </div>
-        <div class="form-group">
-          <label for="golongandarah">Golongan Darah</label>
-          <select class="form-control" id="golongandarah">
-            <option>A (+)</option>
-            <option>B (+)</option>
-            <option>AB (+)</option>
-            <option>O (+)</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="komponen">Komponen</label>
-          <select class="form-control" id="komponen">
-            <option>PRC</option>
-            <option>TC</option>
-            <option>WB</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <div class="form-check form-check-inline mt-3">
-            <strong class="mr-4">Crossmatching</strong>
-              <input class="form-check-input ml-5" type="radio" name="inlineRadioOptions" id="cocok" value="cocok">
-              <label class="form-check-label" for="cocok">Cocok</label>
-          </div>
-          <div class="form-check form-check-inline ml-3">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="tidakcocok" value="tidakcocok">
-            <label class="form-check-label" for="tidakcocok">Tidak Cocok</label>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="form-check form-check-inline mt-3">
-            <strong class="mr-4">Pemeriksaan HIV</strong>
-              <input class="form-check-input ml-5" type="radio" name="inlineRadioOptions" id="negatifhiv" value="negatifhiv">
-              <label class="form-check-label" for="negatifhiv">Negatif (-)</label>
-          </div>
-          <div class="form-check form-check-inline ml-3">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="positifhiv" value="positifhiv">
-            <label class="form-check-label" for="positifhiv">Positif (+)</label>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="form-check form-check-inline mt-3">
-            <strong class="mr-4">Pemeriksaan HCV</strong>
-              <input class="form-check-input ml-5" type="radio" name="inlineRadioOptions" id="negatifhcv" value="negatifhcv">
-              <label class="form-check-label" for="negatifhcv">Negatif (-)</label>
-          </div>
-          <div class="form-check form-check-inline ml-3 mb-3">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="positifhcv" value="positifhcv">
-            <label class="form-check-label" for="positifhcv">Positif (+)</label>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="form-check form-check-inline">
-            <strong class="mr-2">Pemeriksaan HbSAg</strong>
-              <input class="form-check-input ml-5" type="radio" name="inlineRadioOptions" id="negatifhbsag" value="negatifhbsag">
-              <label class="form-check-label" for="negatifhbsag">Negatif (-)</label>
-          </div>
-          <div class="form-check form-check-inline ml-3 mb-3">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="positifhbsag" value="positifhbsag">
-            <label class="form-check-label" for="positifhbsag">Positif (+)</label>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="form-check form-check-inline">
-            <strong>Pemeriksaan Syphilis</strong>
-              <input class="form-check-input ml-5" type="radio" name="inlineRadioOptions" id="negatifsyphilis" value="negatifsyphilis">
-              <label class="form-check-label" for="negatifsyphilis">Negatif (-)</label>
-          </div>
-          <div class="form-check form-check-inline ml-3 mb-3">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="positifsyphilis" value="positifsyphilis">
-            <label class="form-check-label" for="positifsyphilis">Positif (+)</label>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="form-check form-check-inline">
-            <strong>Pemeriksaan Malaria</strong>
-              <input class="form-check-input ml-5" type="radio" name="inlineRadioOptions" id="negatifmalaria" value="negatifmalaria">
-              <label class="form-check-label" for="negatifmalaria">Negatif (-)</label>
-          </div>
-          <div class="form-check form-check-inline ml-3 mb-3">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="positifmalaria" value="positifmalaria">
-            <label class="form-check-label" for="positifmalaria">Positif (+)</label>
-          </div>
-        </div>
+        <form action="" method="POST">
 
-        <div class="form-group">
-          <label for="hb">HB</label>
-          <input type="number" name="hb" id="hb" class="form-control">
-        </div>
+          <div class="form-group row">
+            <label for="tanggalujisaring" class="col-sm-2 col-form-label">Tanggal Uji Saring</label>
+            <div class="col-sm-8">
+              <input type="date" class="form-control" id="tanggalujisaring" name="tanggalujisaring" value="<?= $tampilujisaring[''];?>" required>
+            </div>
+          </div>
 
-        <div class="form-group">
-          <label for="namapetugas">Nama Petugas</label>
-          <select class="form-control" id="namapetugas">
-            <option>Petugas A</option>
-            <option>Petugas B</option>
-            <option>Petugas C</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="nomortelepon">Nomor Telepon Pendonor</label>
-          <input type="number" class="form-control" name="nomortelepon" id="nomortelepon">
-        </div>
-      <button class="btn btn-success"><i class="fas fa-plus"></i> Tambah Data</button>
-      <a class="btn btn-danger" href="dataujisaring.php"><i class="fas fa-backward"></i> Kembali</a>
+          <div class="form-group row" id="">
+            <label for="nomorkantongdarah" class="col-sm-2 col-form-label">Nomor Kantong Darah</label>
+            <div class="col-sm-8">
+              <select name="nomorkantongdarah" class="form-control" id="nomorkantongdarah" required>
+                <option>Pilih Nomor Kantong Darah</option>
+                <?php foreach ($tampilpendonor as $donor): ?>
+                  <option value="<?php echo $donor['idpendonor']; ?>"><?php echo $donor['nomorkantongpendonor']; ?></option>
+                <?php endforeach ?>
+              </select>
+            </div>
+          </div>
 
-      </div>
+          <div class="form-group row">
+            <label for="komponen" class="col-sm-2 col-form-label">Komponen</label>
+            <div class="col-sm-8">
+              <select name="komponen" class="form-control" id="komponen" required>
+                <option value="PRC">PRC</option>
+                <option value="TC">TC</option>
+                <option value="WB">WB</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Pemeriksaan HIV</label>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="hiv" id="inlineRadio1" value="(+)">
+              <label class="form-check-label" for="inlineRadio1">(+) Reaktif</label>
+            </div>
+
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="hiv" id="inlineRadio2" value="(-)" required>
+              <label class="form-check-label" for="inlineRadio2">(-) Tidak Reaktif</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="komponen" class="col-sm-2 col-form-label">Pemeriksaan HCV</label>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="hcv" id="inlineRadio1" value="(+)">
+              <label class="form-check-label" for="inlineRadio1">(+) Reaktif</label>
+            </div>
+
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="hcv" id="inlineRadio2" value="(-)" required>
+              <label class="form-check-label" for="inlineRadio2">(-) Tidak Reaktif</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="komponen" class="col-sm-2 col-form-label">Pemeriksaan HbSAG</label>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="hbsag" id="inlineRadio1" value="(+)">
+              <label class="form-check-label" for="inlineRadio1">(+) Reaktif</label>
+            </div>
+
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="hbsag" id="inlineRadio2" value="(-)" required>
+              <label class="form-check-label" for="inlineRadio2">(-) Tidak Reaktif</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="komponen" class="col-sm-2 col-form-label3">Pemeriksaan Syphilis</label>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="syphilis" id="inlineRadio1" value="(+)">
+              <label class="form-check-label" for="inlineRadio1">(+) Reaktif</label>
+            </div>
+
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="syphilis" id="inlineRadio2" value="(-)" required>
+              <label class="form-check-label" for="inlineRadio2">(-) Tidak Reaktif</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="komponen" class="col-sm-2 col-form-label">Pemeriksaan Malaria</label>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="malaria" id="inlineRadio1" value="(+)">
+              <label class="form-check-label" for="inlineRadio1">(+) Reaktif</label>
+            </div>
+
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="malaria" id="inlineRadio2" value="(-)" required>
+              <label class="form-check-label" for="inlineRadio2">(-) Tidak Reaktif</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="komponen" class="col-sm-2 col-form-label">Crossmatching</label>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="crossmatching" id="inlineRadio1" value="Cocok">
+              <label class="form-check-label" for="inlineRadio1">Cocok</label>
+            </div>
+
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="crossmatching" id="inlineRadio2" value="Tidak Cocok" required>
+              <label class="form-check-label" for="inlineRadio2">Tidak cocok</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="namapetugas" class="col-sm-2 col-form-label">Nama Petugas</label>
+            <div class="col-sm-8">
+              <select class="form-control" id="namapetugas" name="namapetugas" required>
+                <option>Pilih Petugas</option>
+                <?php foreach ($tampilpetugas as $ptgs) : ?>
+                  <option value="<?= $ptgs['idpetugasutdpmi']; ?>"><?php echo $ptgs['namapetugasutdpmi']; ?></option>
+                <?php endforeach ?>
+              </select>
+            </div>
+          </div>
+
+          <button class="btn btn-success" type="submit" name="submit"><i class="fas fa-plus"></i> Tambah Data</button>
+          <a class="btn btn-danger" href="dataujisaring.php"><i class="fas fa-backward"></i> Kembali</a>
+
+        </form>
+
+      </div><!-- Tutup Container Fluid -->
+
     </section>
     <!-- /.content -->
+
   </div>
   <!-- /.content-wrapper -->
   
@@ -229,5 +270,7 @@
 <script src="dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+<!-- Live Search -->
+<script src="livesearch.js"></script>
 </body>
 </html>

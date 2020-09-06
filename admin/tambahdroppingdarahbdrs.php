@@ -1,9 +1,53 @@
+<?php 
+
+  session_start();
+  
+  if(!isset($_SESSION["login"]))
+  
+  header("location: ../login.php");
+   
+  include 'functions.php';
+
+  $pasien   = tampilpasien("SELECT idpasien,kodepasien FROM pasien");
+  $pendonor = tampilpendonor("SELECT idpendonor,nomorkantongpendonor FROM pendonor");
+  $petugas  = tampilpetugas("SELECT idpetugasutdpmi,namapetugasutdpmi FROM petugasutdpmi"); 
+
+  // Kode BA Dropping BDRS
+  $result   = mysqli_query($koneksi,"SELECT max(iddroppingbdrs) AS kodeba FROM droppingbdrs");
+  $data     = mysqli_fetch_array($result);
+  $kodeba   = $data['kodeba'];
+  $kodeba++;
+  $kode     = "BA/UTD/PMI-ME/";
+  $tahun    = "/2020";
+  $kodeba   = "$kode" . "$kodeba" . "$tahun";
+
+  if (isset($_POST['submit'])) 
+  {
+      if(tambahdroppingbdrs($_POST) > 0)
+      {
+        echo  "<script>
+                alert('Data Berhasil Ditambahkan');
+                document.location.href='datadroppingbdrs.php';
+               </script>";
+      }else
+      {
+        echo  "<script>
+                alert('Data Gagal Ditambahkan');
+                document.location.href='datadroppingbdrs.php';
+               </script>";
+        echo mysqli_error($koneksi);
+      }
+  }
+
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>SI PD UTD PMI KAB. MUARA ENIM</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -41,7 +85,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Dropping Darah</h1>
+            <h1 class="m-0 text-dark">Tambah Data Dropping Darah</h1>
           </div><!-- /.col -->
           <!-- /.col -->
         </div><!-- /.row -->
@@ -55,79 +99,112 @@
       <!-- /.container-fluid -->
       <div class="container-fluid">
         
-      <form>
-        <div class="form-group">
-          <label for="nomorkantongdarah">Nomor Kantong Darah</label>
-          <input type="text" class="form-control" id="nomorkantongdarah">
-        </div>
-        <div class="form-group">
-          <label for="nomorberitaacara">Nomor Berita Acara</label>
-          <input type="text" name="nomorberitaacara" class="form-control" id="nomorberitaacara">
-        </div>
-        <div class="form-group">
-          <label for="tanggalpermintaan">Tanggal Dropping</label>
-          <input type="date" class="form-control" id="tanggalpermintaan">
-        </div>
-        <div class="form-group">
-          <label for="namapetugas">Nama Petugas</label>
-          <input type="text" class="form-control" id="namapetugas">
-        </div>
-        <div class="form-group">
-          <label for="namapengambildarah">Nama Pengambil Darah</label>
-          <input type="text" class="form-control" id="namapengambildarah">
-        </div>
-        <div class="form-group">
-          <label for="alamatpengambildarah">Alamat Pengambil Darah</label>
-          <input type="text" class="form-control" id="alamatpengambildarah">
-        </div>
-        <div class="form-group">
-          <label for="untuknamapasien">Untuk Nama Pasien</label>
-          <input type="text" class="form-control" id="untuknamapasien">
-        </div>
-        <div class="form-group">
-          <label for="golongandarah">Golongan Darah</label>
-          <select class="form-control" id="golongandarah">
-            <option>A</option>
-            <option>B</option>
-            <option>AB</option>
-            <option>O</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="produk">Produk</label>
-          <select class="form-control" id="produk">
-            <option>PRC</option>
-            <option>TC</option>
-            <option>WB</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="volumekantongdarah">Volume Kantong Darah</label>
-          <input type="text" name="volumekantongdarah" id="volumekantongdarah" class="form-control">
-        </div>
-        <div class="form-group">
-          <label for="tanggalpenyadapan">Tanggal Penyadapan</label>
-          <input type="date" class="form-control" id="tanggalpenyadapan">
-        </div>
-        <div class="form-group">
-        <div class="form-group">
-          <label for="tanggalpenyadapan">Tanggal Expired Darah</label>
-          <input type="date" class="form-control" id="tanggalpenyadapan">
-        </div>
-        <div class="form-group">
-          <label for="jeniskolf">Jenis Kolf</label>
-          <select class="form-control" id="jeniskolf">
-            <option>Single</option>
-            <option>Double</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="keterangan">Keterangan</label>
-          <input type="text-area" name="keterangan" class="form-control" id="keterangan">
+      <form action="" method="POST">
+
+        <div class="form-group row">
+          <label for="tanggaldropping" class="col-sm-2 col-form-label">Tanggal Dropping</label>
+          <div class="col-sm-8">
+            <input type="date" class="form-control" name="tanggaldropping" id="tanggaldropping">
+          </div>
         </div>
 
-      <button class="btn btn-success"><i class="fas fa-plus"></i> Tambah Dropping Darah</button>
-      <a class="btn btn-danger" href="datadroppingdarah.php"><i class="fas fa-backward"></i> Kembali</a>
+        <div class="form-group row">
+          <label for="nomorberitaacara" class="col-sm-2 col-form-label">Nomor Berita Acara</label>
+          <div class="col-sm-8">
+            <input type="text" name="nomorberitaacara" class="form-control" id="nomorberitaacara" value="<?php echo $kodeba; ?>" readonly>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="idpasien" class="col-sm-2 col-form-label">Kode Pasien</label>
+          <div class="col-sm-8">
+            <select class="form-control" id="idpasien" name="idpasien" required>
+              <option>Pilih Kode Pasien</option>
+              <?php foreach ($pasien as $psn): ?>
+                <option value="<?php echo $psn['idpasien']; ?>"><?php echo $psn['kodepasien']; ?></option>
+              <?php endforeach ?>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group row">
+          <label for="idpendonor" class="col-sm-2 col-form-label">Nomor Kantong Darah</label>
+          <div class="col-sm-8">
+            <select class="form-control" id="idpendonor" name="idpendonor" required>
+              <option>Pilih Nomor Kantong Darah</option>
+              <?php foreach ($pendonor as $dnr): ?>
+                <option value="<?php echo $dnr['idpendonor']; ?>"><?php echo $dnr['nomorkantongpendonor']; ?></option>
+              <?php endforeach ?>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="namapenerima" class="col-sm-2 col-form-label">Nama Penerima Darah</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" name="namapenerima" id="namapenerima">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="idpetugas" class="col-sm-2 col-form-label">Nama Petugas Dropping</label>
+          <div class="col-sm-8">
+            <select class="form-control" id="idpetugas" name="idpetugas">
+              <option>Pilih Nama Petugas</option>
+              <?php foreach ($petugas as $ptgs): ?>
+                  <option value="<?php echo $ptgs['idpetugasutdpmi'] ?>"><?php echo $ptgs['namapetugasutdpmi']; ?></option>  
+              <?php endforeach ?>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="alamat" class="col-sm-2 col-form-label">Alamat Pengambil Darah</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" name="alamat" id="alamat" required>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="volumekantongdarah" class="col-sm-2 col-form-label">Volume Kantong Darah</label>
+          <div class="col-sm-8">
+            <input type="text" name="volumekantongdarah" id="volumekantongdarah" name="volumekantongdarah" class="form-control" required>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="tanggalpenyadapan" class="col-sm-2 col-form-label">Tanggal Penyadapan</label>
+          <div class="col-sm-8">
+            <input type="date" class="form-control" id="tanggalpenyadapan" name="tanggalpenyadapan" required>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="tanggalexpired" class="col-sm-2 col-form-label">Tanggal Expired Darah</label>
+          <div class="col-sm-8">
+            <input type="date" class="form-control" id="tanggalexpired" name="tanggalexpired" required>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="jeniskolf" class="col-sm-2 col-form-label">Jenis Kolf</label>
+          <div class="col-sm-8">
+            <select class="form-control" id="jeniskolf" name="jeniskolf" required>
+              <option value="Single">Single</option>
+              <option value="Double">Double</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="keterangan" class="col-sm-2 col-form-label">Keterangan</label>
+          <div class="col-sm-8">
+            <input type="text-area" name="keterangan" class="form-control" id="keterangan">
+          </div>
+        </div>
+
+      <button class="btn btn-success" type="submit" name="submit"><i class="fas fa-plus"></i> Tambah Dropping Darah</button>
+      <a class="btn btn-danger" href="datadroppingbdrs.php"><i class="fas fa-backward"></i> Kembali</a>
 
       </div>
     </section>

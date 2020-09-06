@@ -1,9 +1,48 @@
+<?php  
+
+  session_start();
+  
+  if(!isset($_SESSION["login"]))
+  
+  header("location: ../login.php");
+
+  include 'functions.php';
+
+  if (isset($_POST['submit'])) 
+  {  
+    if(tambahpasien($_POST) > 0 )
+    {
+      echo "<script>
+              alert('Data Berhasil Ditambahkan');
+              document.location.href = 'datapasien.php';
+            </script>";
+    } 
+     else
+    {
+      echo "<script>
+              alert ('Data Gagal Ditambahkan');
+              document.location.href = 'datapasien.php';
+            </script>";
+      echo mysqli_error($koneksi);
+    }
+  }
+
+  // Kode Pasien
+  $result = mysqli_query($koneksi,"SELECT max(idpasien) AS kodepasien FROM pasien");
+  $data   = mysqli_fetch_array($result);
+  $kodepasien = $data['kodepasien'];
+  $kodepasien++;
+  $huruf = "PASIEN00";
+  $kodepasien = $huruf . $kodepasien; 
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>SI PD UTD PMI KAB. MUARA ENIM</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -55,48 +94,82 @@
       <!-- /.container-fluid -->
       <div class="container-fluid">
         
-      <form>
-        <div class="form-group">
-          <label for="tanggalpermintaan">Tanggal Permintaan</label>
-          <input type="date" class="form-control" id="tanggalpermintaan">
-        </div>
-        <div class="form-group">
-          <label for="namapasien">Nama Pasien</label>
-          <input type="text" class="form-control" id="namapasien" placeholder="Masukkan Nama Lengkap Pasien">
-        </div>
-        <div class="form-group">
-          <label for="rumahsakit">Rumah Sakit</label>
-          <select class="form-control" id="rumahsakit">
-            <option>RSUD Rabain</option>
-            <option>RS BAM</option>
-            <option>Klinik KIM</option>
-            <option>Umum</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="golongandarah">Golongan Darah</label>
-          <select class="form-control" id="golongandarah">
-            <option>A</option>
-            <option>B</option>
-            <option>AB</option>
-            <option>O</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="produk">Produk</label>
-          <select class="form-control" id="produk">
-            <option>PRC</option>
-            <option>TC</option>
-            <option>WB</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="jumlahkantong">Jumlah Kantong</label>
-          <input type="number" class="form-control" id="jumlahkantong">
-        </div>
-      <button class="btn btn-success"><i class="fas fa-plus"></i> Tambah Data</button>
-      <a class="btn btn-danger" href="datapasien.php"><i class="fas fa-backward"></i> Kembali</a>
+      <form  action="" method="POST">
 
+        <div class="form-group row">
+          <label for="tanggalpermintaan" class="col-sm-2 col-form-label">Tanggal Permintaan</label>
+          <div class="col-sm-8">
+            <input type="date" class="form-control" id="tanggalpermintaan" name="tanggalpermintaan" required>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="kodepasien" class="col-sm-2 col-form-label">Kode Pasien</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" id="kodepasien" name="kodepasien" value="<?php echo $kodepasien; ?>" readonly required>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="namapasien" class="col-sm-2 col-form-label">Nama Pasien</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" id="namapasien" name="namapasien" placeholder="Masukkan Nama Lengkap Pasien" required>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="rumahsakit" class="col-sm-2 col-form-label">Rumah Sakit</label>
+          <div class="col-sm-8">
+            <select class="form-control" id="rumahsakit" name="rumahsakitpasien">
+              <option value="RSUD Rabain">RSUD H.M Rabain</option>
+              <option value="RS BAM">RS Bukit Asam Medika</option>
+              <option value="Klinik KIM">Klinik KIM</option>
+              <option value="Umum">Umum</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="golongandarah" class="col-sm-2 col-form-label">Golongan Darah</label>
+          <div class="col-sm-8">
+            <select class="form-control" id="golongandarah" name="goldapasien">
+              <option value="A (+)">A (+)</option>
+              <option value="B (+)">B (+)</option>
+              <option value="AB (+)">AB (+)</option>
+              <option value="O (+)">O (+)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="komponen" class="col-sm-2 col-form-label">Komponen Darah</label>
+          <div class="col-sm-8">
+            <select class="form-control" id="komponen" name="komponenpasien">
+              <option value="PRC">PRC</option>
+              <option value="TC">TC</option>
+              <option value="WB">WB</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="jumlahkantong" class="col-sm-2 col-form-label">Jumlah Kantong</label>
+          <div class="col-sm-8">
+            <input type="number" class="form-control" id="jumlahkantong" name="jumlahkantongpasien">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="keterangan" class="col-sm-2 col-form-label">Keterangan</label>
+          <div class="col-sm-8">
+            <textarea type="text" class="form-control" id="keterangan" name="keterangan"></textarea>
+          </div>
+        </div>
+
+        <button class="btn btn-success" type="submit" name="submit"><i class="fas fa-plus"></i> Tambah Pasien</button>
+        <a class="btn btn-danger" href="datapasien.php"><i class="fas fa-backward"></i> Kembali</a>
+
+      </form>
       </div>
     </section>
     <!-- /.content -->

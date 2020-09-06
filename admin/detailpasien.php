@@ -1,9 +1,24 @@
+<?php  
+  
+  session_start();
+  
+  if(!isset($_SESSION["login"]))
+  
+  header("location: ../login.php");
+
+  include 'functions.php';
+
+  $id     = $_GET['id'];
+  $tpl    = tampilpasien("SELECT * FROM pasien WHERE idpasien=$id")[0];
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>SI PD UTD PMI KAB. MUARA ENIM</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -41,7 +56,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Data Pasien A,  08 Agustus 2020 </h1>
+            <h1 class="m-0 text-dark">Detail Pasien <?= $tpl['namapasien']?></h1>
           </div><!-- /.col -->
           <!-- /.col -->
         </div><!-- /.row -->
@@ -55,61 +70,59 @@
       <!-- /.container-fluid -->
       <div class="container-fluid">
 
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">No</th>
-              <th scope="col">Rumah Sakit</th>
-              <th scope="col">Golongan Darah</th>
-              <th scope="col">Nomor Kantong</th>
-              <th scope="col">Nama Petugas</th>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>RSUD Rabain</td>
-              <td>O (+)</td>
-              <td>12345</td>
-              <td>Petugas A</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>RS BAM</td>
-              <td>O (+)</td>
-              <td>12345</td>
-              <td>Petugas B</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>Klinik</td>
-              <td>O (+)</td>
-              <td>12345</td>
-              <td>Petugas C</td>
-            </tr>
-            <tr>
-              <th scope="row">4</th>
-              <td>Klinik</td>
-              <td>O (+)</td>
-              <td>12345</td>
-              <td>Petugas D</td>
-            </tr>
-            <tr>
-              <th scope="row">5</th>
-              <td>Klinik</td>
-              <td>O (+)</td>
-              <td>12345</td>
-              <td>Petugas E</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn btn-success" href="tambahpasien.php"><i class="fas fa-plus"></i> Tambah Data Pasien</a>
+            <a class="btn btn-primary" href="ubahpasien.php?id=<?= $tpl['idpasien'];?>" title="Ubah"><i class="fas fa-edit"></i> Ubah Data Pasien</a>
+            <a href="cetakdetailpasien.php?id=<?= $tpl['idpasien']?>" class="btn btn-info" target="_blank"><i class="fas fa-print"></i> Cetak</a>
+          </div>
+          
+          <div class="card-body">
+            <table class="table table-bordered table-striped">
+                <tr>
+                  <th>Tanggal Permintaan</th>
+                  <td><?= $tpl['tanggalpermintaanpasien'];?></td>
+                </tr>
+                <tr>
+                  <th>Nama Pasien</th>
+                  <td><?= $tpl['namapasien']; ?></td>
+                </tr>
+                <tr>
+                  <th>Kode Pasien</th>
+                  <td><?= $tpl['kodepasien']; ?></td>
+                </tr>
+                <tr>
+                  <th>Rumah Sakit</th>
+                  <td><?= $tpl['rumahsakitpasien'];?></td>
+                </tr>
+                <tr>
+                  <th>Golongan Darah</th>
+                  <td><?= $tpl['goldapasien'];?></td>
+                </tr>
+                <tr>
+                  <th>Komponen</th>
+                  <td><?= $tpl['komponenpasien'];?></td>
+                </tr>
+                <tr>
+                  <th>Jumlah Kantong</th>
+                  <td><?= $tpl['jumlahkantongpasien'];?></td>
+                </tr>
+                <tr>
+                  <th>Keterangan</th>
+                  <td><?= $tpl['keteranganpasien']?></td>
+                </tr>
 
-        <a class="btn btn-danger" href="datapasien.php">Kembali</a>
+            </table>
+            
+          </div> <!-- Tutup Card Body -->
 
-      </div>
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+        </div> <!-- Tutup Card -->
+
+      </div> <!-- Tutup Container Fluid -->
+    
+    </section> <!-- /.content -->
+  
+  </div> <!-- /.content-wrapper -->
   
   <?php include 'footer.php'; ?>
 
@@ -151,5 +164,6 @@
 <script src="dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+
 </body>
 </html>

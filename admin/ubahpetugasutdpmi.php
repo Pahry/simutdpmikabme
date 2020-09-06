@@ -1,4 +1,11 @@
 <?php  
+  
+  session_start();
+  
+  if(!isset($_SESSION["login"]))
+  
+  header("location: ../login.php");
+  
   include 'functions.php';
 
   $idpetugasutdpmi = $_GET['id'];
@@ -34,7 +41,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>SI PD UTD PMI KAB. MUARA ENIM</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -89,34 +96,48 @@
         
       <form action="" method="post">
       
-      <div class="form-group">
-          
+        <div class="form-group">  
           <input type="hidden" name="idpetugasutdpmi" value="<?php echo $ptgs['idpetugasutdpmi']; ?>">
         </div>
-        <div class="form-group">
-          <label for="namappetugasutdpmi">Nama Petugas</label>
-          <input type="text" class="form-control" id="namapetugasutdpmi" name="namapetugasutdpmi" placeholder="Masukkan Nama Lengkap" value="<?php echo $ptgs['namapetugasutdpmi']; ?>" required>
+
+        <div class="form-group row">
+          <label for="namappetugasutdpmi" class="col-sm-2 col-form-label">Nama Petugas</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" id="namapetugasutdpmi" name="namapetugasutdpmi" placeholder="Masukkan Nama Lengkap" value="<?php echo $ptgs['namapetugasutdpmi']; ?>" required>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="tanggallahir">Tanggal Lahir</label>
-          <input type="date" name="tanggallahir" id="tanggallahir" class="form-control" value="<?php echo $ptgs['tanggallahirpetugasutdpmi']; ?>" required>
+
+        <div class="form-group row">
+          <label for="tanggallahir" class="col-sm-2 col-form-label">Tanggal Lahir</label>
+          <div class="col-sm-8">
+            <input type="date" name="tanggallahir" id="tanggallahir" class="form-control" value="<?php echo $ptgs['tanggallahirpetugasutdpmi']; ?>" required>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="golongandarah">Golongan Darah</label>
-          <select class="form-control" id="golongandarah" name="golongandarah">
-            <option value="A (+)" <?php if($ptgs['goldapetugasutdpmi'] == "A (+)")  echo "selected" ?>>A (+)</option>
-            <option value="B (+)" <?php if($ptgs['goldapetugasutdpmi'] == "B (+)")  echo "selected" ?>>B (+)</option>
-            <option value="AB (+)"<?php if($ptgs['goldapetugasutdpmi'] == "AB (+)") echo "selected" ?>>AB (+)</option>
-            <option value="O (+)" <?php if($ptgs['goldapetugasutdpmi'] == "O (+)")  echo "selected" ?>>O (+)</option>
-          </select>
+
+        <div class="form-group row">
+          <label for="golongandarah" class="col-sm-2 col-form-label">Golongan Darah</label>
+          <div class="col-sm-8">
+            <select class="form-control" id="golongandarah" name="golongandarah">
+              <option value="A (+)" <?php if($ptgs['goldapetugasutdpmi'] == "A (+)")  echo "selected" ?>>A (+)</option>
+              <option value="B (+)" <?php if($ptgs['goldapetugasutdpmi'] == "B (+)")  echo "selected" ?>>B (+)</option>
+              <option value="AB (+)"<?php if($ptgs['goldapetugasutdpmi'] == "AB (+)") echo "selected" ?>>AB (+)</option>
+              <option value="O (+)" <?php if($ptgs['goldapetugasutdpmi'] == "O (+)")  echo "selected" ?>>O (+)</option>
+            </select>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="pendidikan">Pendidikan</label>
-          <input type="text" name="pendidikan" id="pendidikan" class="form-control" value="<?php echo $ptgs['pendidikanpetugasutdpmi']; ?>" required>
+
+        <div class="form-group row">
+          <label for="pendidikan" class="col-sm-2 col-form-label">Pendidikan</label>
+          <div class="col-sm-8">
+            <input type="text" name="pendidikan" id="pendidikan" class="form-control" value="<?php echo $ptgs['pendidikanpetugasutdpmi']; ?>" required>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="jabatan">Jabatan</label>
-          <input type="text" name="jabatan" id="jabatan" class="form-control" value="<?php echo $ptgs['jabatanpetugasutdpmi']; ?>" required>
+
+        <div class="form-group row">
+          <label for="jabatan" class="col-sm-2 col-form-label">Jabatan</label>
+          <div class="col-sm-8">
+            <input type="text" name="jabatan" id="jabatan" class="form-control" value="<?php echo $ptgs['jabatanpetugasutdpmi']; ?>" required>
+          </div>
         </div>
         
       <button class="btn btn-success" type="submit" name="submit"><i class="fas fa-plus"></i> Ubah Data</button>

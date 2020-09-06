@@ -1,15 +1,21 @@
 <?php  
-
+  
+  session_start();
+  
+  if(!isset($_SESSION["login"]))
+  
+  header("location: ../login.php");
+  
   include 'functions.php';
 
   global $koneksi;
 
-  $tampilflebotomi = tampilpetugas(
-    "SELECT idpetugasutdpmi,namapetugasutdpmi FROM petugasutdpmi");
+  $tampilflebotomi  = tampilpetugas("SELECT idpetugasutdpmi,namapetugasutdpmi FROM petugasutdpmi");
+  
+  $medis            = tampilparamedis("SELECT * FROM paramedis");
 
   if (isset($_POST['submit'])) 
   {
-
     if(tambahflebotomi($_POST) > 0 )
     {
       echo "<script>
@@ -20,9 +26,9 @@
     {
       echo "<script>
               alert('Data gagal ditambahkan');
-              document.location.href = 'datapetugasutdpmi.php';
             </script>" ;
       echo mysqli_error($koneksi);
+              // document.location.href = 'dataflebotomi.php';
     }
   }
 
@@ -32,7 +38,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>SI PD UTD PMI KAB. MUARA ENIM</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -85,73 +91,166 @@
       <div class="container-fluid">
         
       <form action="" method="POST">
-        <div class="form-group">
-          <label for="tanggaldonorflebotomi">Tanggal Donor</label>
-          <input type="date" class="form-control" name="tanggaldonorflebotomi" id="tanggaldonorflebotomi" required>
+
+        <div class="form-group row">
+          <label for="tanggaldonorflebotomi" class="col-sm-2 col-form-label">Tanggal Donor</label>
+          <div class="col-sm-8">
+            <input type="date" class="form-control" name="tanggaldonorflebotomi" id="tanggaldonorflebotomi" required>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="nomorktpflebotomi">Nomor KTP</label>
-          <input type="text" class="form-control" id="nomorktpflebotomi" name="nomorktpflebotomi" placeholder="Masukkan Nomor KTP" required>
+
+        <div class="form-group row">
+          <label for="nomorktpflebotomi" class="col-sm-2 col-form-label">Nomor KTP</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" id="nomorktpflebotomi" name="nomorktpflebotomi" placeholder="Masukkan Nomor KTP" required>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="namaflebotomi">Nama Pasien Flebotomi</label>
-          <input type="text" class="form-control" id="namaflebotomi" name="namaflebotomi" placeholder="Masukkan Nama Lengkap Pasien Flebotomi" required>
+
+        <div class="form-group row">
+          <label for="namaflebotomi" class="col-sm-2 col-form-label">Nama Pasien Flebotomi</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" id="namaflebotomi" name="namaflebotomi" placeholder="Masukkan Nama Lengkap Pasien Flebotomi" required>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="jeniskelaminflebotomi">Jenis Kelamin</label>
-          <select class="form-control" id="jeniskelaminflebotomi" name="jeniskelaminflebotomi" required>
-            <option value="Laki-laki">Laki-laki</option>
-            <option value="Perempuan">Perempuan</option>
-          </select>
+
+        <div class="form-group row">
+          <label for="jeniskelaminflebotomi" class="col-sm-2 col-form-label">Jenis Kelamin</label>
+          <div class="col-sm-8">
+            <select class="form-control" id="jeniskelaminflebotomi" name="jeniskelaminflebotomi" required>
+              <option value="Laki-laki">Laki-laki</option>
+              <option value="Perempuan">Perempuan</option>
+            </select>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="alamatflebotomi">Alamat Rumah</label>
-          <textarea class="form-control" name="alamatflebotomi" id="alamatflebotomi" rows="3" required></textarea>
+
+        <div class="form-group row">
+          <label for="alamatflebotomi" class="col-sm-2 col-form-label">Alamat Rumah</label>
+          <div class="col-sm-8"> 
+              <textarea class="form-control" name="alamatflebotomi" id="alamatflebotomi" required></textarea>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="nomorteleponflebotomi">Nomor Telepon</label>
-          <input type="text" class="form-control" name="nomorteleponflebotomi" id="nomorteleponflebotomi" required>
+
+        <div class="form-group row">
+          <label for="nomorteleponflebotomi" class="col-sm-2 col-form-label">Nomor Telepon</label>
+          <div class="col-sm-8"> 
+              <input type="text" class="form-control" name="nomorteleponflebotomi" id="nomorteleponflebotomi" required>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="pekerjaanflebotomi">Pekerjaan</label>
-          <input type="text" class="form-control" name="pekerjaanflebotomi" id="pekerjaanflebotomi" required>
+
+        <div class="form-group row">
+          <label for="pekerjaanflebotomi" class="col-sm-2 col-form-label">Pekerjaan</label>
+          <div class="col-sm-8"> 
+              <input type="text" class="form-control" name="pekerjaanflebotomi" id="pekerjaanflebotomi" required>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="tanggallahir">Tanggal Lahir</label>
-          <input type="date" class="form-control" name="tanggallahirflebotomi" id="tanggallahir" required>
+
+        <div class="form-group row">
+          <label for="tanggallahir" class="col-sm-2 col-form-label">Tanggal Lahir</label>
+          <div class="col-sm-8"> 
+              <input type="date" class="form-control" name="tanggallahirflebotomi" id="tanggallahir" required>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="umur">Umur</label>
-          <input type="number" class="form-control" name="umurflebotomi" id="umur" min="17" max="60" placeholder="17-60 tahun" required>
+
+        <div class="form-group row">
+          <label for="umur" class="col-sm-2 col-form-label">Umur</label>
+          <div class="col-sm-8"> 
+              <input type="number" class="form-control" name="umurflebotomi" id="umur" min="17" max="60" placeholder="17-60 tahun" required>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="golongandarah">Golongan Darah</label>
-          <select class="form-control" id="golongandarah" name="goldaflebotomi" required>
-            <option value="A (+)">A (+)</option>
-            <option value="B (+)">B (+)</option>
-            <option value="AB (+)">AB (+)</option>
-            <option value="O (+)">O (+)</option>
-          </select>
+
+        <h2 class="mt-5 text-dark">Diisi oleh Petugas Pemeriksaan Pendahuluan</h2>
+
+        <div class="form-group row">  
+            <label for="sysflebotomi" class="col-sm-2 col-form-label">Tekanan Darah Sistole</label>
+            <div class="col-sm-8"> 
+                <input type="text" class="form-control" name="sysflebotomi" id="sysflebotomi" required>
+            </div>
         </div>
-       <h1 class="mt-3 text-dark">Diisi oleh Petugas Pemeriksaan Pendahuluan</h1>
-        <h1 class="mt-3 text-dark">Data Petugas Aftap</h1>
-        <div class="form-group">
-          <label for="idpetugasutdpmi">Nama Petugas Aftap</label>
-          <select class="form-control" id="idpetugasutdpmi" name="idpetugasutdpmi" required>
-            <option>Pilih Petugas Aftap</option>
-            <?php foreach ($tampilflebotomi as $ptgs) : var_dump($ptgs); ?>
-              <option value="<?php echo $ptgs["idpetugasutdpmi"]; ?>"><?php echo $ptgs["namapetugasutdpmi"]; ?></option>
-            <?php endforeach ?>
-          </select>
+
+        <div class="form-group row">  
+            <label for="diaflebotomi" class="col-sm-2 col-form-label">Tekanan Darah Diastole</label>
+            <div class="col-sm-8"> 
+                <input type="text" class="form-control" name="diaflebotomi" id="diaflebotomi" required>
+            </div>
+        </div>  
+
+        <div class="form-group row">  
+            <label for="hbflebotomi" class="col-sm-2 col-form-label">Kadar HB</label>
+            <div class="col-sm-8"> 
+                <input type="text" class="form-control" name="hbflebotomi" id="hbflebotomi">
+            </div>
+        </div>    
+
+        <div class="form-group row">
+          <label for="golongandarah" class="col-sm-2 col-form-label">Golongan Darah</label>
+          <div class="col-sm-8"> 
+            <select class="form-control" id="golongandarah" name="goldaflebotomi" required>
+              <option value="A (+)">A (+)</option>
+              <option value="B (+)">B (+)</option>
+              <option value="AB (+)">AB (+)</option>
+              <option value="O (+)">O (+)</option>
+            </select>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="sebanyakflebotomi">Sebanyak</label>
-          <input type="text" name="sebanyakflebotomi" id="sebanyakflebotomi" class="form-control" required>
-          </select>
+
+        <div class="form-group row">  
+            <label for="paramedisflebotomi" class="col-sm-2 col-form-label">Dokter / Paramedis</label>
+            <div class="col-sm-8"> 
+              <select class="form-control" id="paramedisflebotomi" name="paramedisflebotomi" required>
+                <option>Pilih Dokter / Paramedis</option>
+                <?php foreach ($medis as $mds) :  ?>
+                  <option value="<?php echo $mds["idparamedis"]; ?>"><?php echo $mds["namaparamedis"]; ?></option>
+                <?php endforeach ?>
+            </select>
+            </div>
         </div>
-        <div class="form-group">
-          <label for="nomorkantongflebotomi">Nomor Kantong</label>
-          <input type="text" name="nomorkantongflebotomi" class="form-control" id="nomorkantongflebotomi" required>
+
+        <h2 class="mt-5 text-dark">Data Petugas Aftap</h2>
+        <div class="form-group row">
+          <label for="idpetugasutdpmi" class="col-sm-2 col-form-label">Nama Petugas Aftap</label>
+          <div class="col-sm-8"> 
+            <select class="form-control" id="idpetugasutdpmi" name="idpetugasutdpmi" required>
+              <option>Pilih Petugas Aftap</option>
+              <?php foreach ($tampilflebotomi as $ptgs) :  ?>
+                <option value="<?php echo $ptgs["idpetugasutdpmi"]; ?>"><?php echo $ptgs["namapetugasutdpmi"]; ?></option>
+              <?php endforeach ?>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="nomorkantongflebotomi" class="col-sm-2 col-form-label">Nomor Kantong</label>
+          <div class="col-sm-8"> 
+              <input type="text" name="nomorkantongflebotomi" class="form-control" id="nomorkantongflebotomi" required>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="jeniskantongflebotomi" class="col-sm-2 col-form-label">Jenis Kantong</label>
+          <div class="col-sm-8"> 
+              <input type="text" name="jeniskantongflebotomi" class="form-control" id="jeniskantongflebotomi" required>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="sebanyakflebotomi" class="col-sm-2 col-form-label">Sebanyak</label>
+          <div class="col-sm-8"> 
+            <input type="text" name="sebanyakflebotomi" id="sebanyakflebotomi" class="form-control" required>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="pengambilanflebotomi" class="col-sm-2 col-form-label">Pengambilan</label>
+          <div class="col-sm-8"> 
+              <input type="text" name="pengambilanflebotomi" class="form-control" id="pengambilanflebotomi" required>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="reaksiflebotomi" class="col-sm-2 col-form-label">Reaksi</label>
+          <div class="col-sm-8"> 
+              <input type="text" name="reaksiflebotomi" class="form-control" id="reaksiflebotomi" required>
+          </div>
         </div>
 
         <button class="btn btn-success" type="submit" name="submit"><i class="fas fa-plus"></i> Tambah Data Pendonor</button>

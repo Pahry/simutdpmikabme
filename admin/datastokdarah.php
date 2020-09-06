@@ -1,9 +1,24 @@
+<?php  
+
+  session_start();
+  
+  if(!isset($_SESSION["login"]))
+  
+  header("location: ../login.php");
+ 
+  include 'functions.php';
+
+  $tampil = tampilstokdarah("SELECT * FROM stokdarah");
+
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SIM UTD PMI KAB ME | Dashboard</title>
+  <title>SI PD UTD PMI KAB. MUARA ENIM</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -26,6 +41,18 @@
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+  <style>
+      @media print
+      {
+        .card-header, .main-footer, .aksi
+        {
+          display: none;
+        }
+      }
+  </style>
+
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -56,51 +83,48 @@
       
       <!-- /.container-fluid -->
       <div class="container-fluid"> 
+        <div class="card">
+          
+          <div class="card-header">
+            <a href="tambahstokdarah.php" class="btn btn-success disabled"><i class="fas fa-plus"></i> Tambah Stok Darah</a>
+          </div><!-- Tutup Card Header -->
+          
+          <div class="card-body">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Komponen</th>
+                  <th>A (+)</th>
+                  <th>B (+)</th>
+                  <th>AB (+)</th>
+                  <th>O (+)</th>
+                  <th class="aksi">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php $no=1; foreach ($tampil as $tpl): ?>
+                  <tr>
+                    <th><?php echo $no; $no++; ?></th>
+                    <td><?php echo $tpl['komponenstokdarah']; ?></td>
+                    <td><?php echo $tpl['goldaa']; ?></td>
+                    <td><?php echo $tpl['goldab']; ?></td>
+                    <td><?php echo $tpl['goldaab']; ?></td>
+                    <td><?php echo $tpl['goldao']; ?></td>
+                    <td class="aksi">
+                      <a href="ubahstokdarah.php?id=<?= $tpl['idstokdarah']?>" class="btn btn-sm btn-primary" title="Ubah"><i class="fas fa-edit"></i></a>
+                      <a href="hapusstokdarah.php?id=<?= $tpl['idstokdarah']?>" class="btn btn-sm btn-danger disabled" onclick="return confirm('Apakah Anda Yakin ?')" title="Hapus"> <i class="fas fa-trash"></i></a>
+                    </td>
+                  </tr>
+                <?php endforeach ?>
+              </tbody>
+            </table>
 
-        <table class="table table-striped mt-3">
-          <thead>
-            <tr>
-              <th scope="col">No</th>
-              <th scope="col">Komponen</th>
-              <th scope="col">A</th>
-              <th scope="col">B</th>
-              <th scope="col">AB</th>
-              <th scope="col">O</th>
-              <th scope="col">Jumlah</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>PRC</td>
-              <td>5</td>
-              <td>4</td>
-              <td>2</td>
-              <td>2</td>
-              <td>13</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>TC</td>
-              <td>5</td>
-              <td>2</td>
-              <td>3</td>
-              <td>1</td>
-              <td>11</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>WB</td>
-              <td>4</td>
-              <td>2</td>
-              <td>3</td>
-              <td>3</td>
-              <td>12</td>
-            </tr>
-          </tbody>
-        </table>
+          <a href="cetakstokdarah.php" class="btn btn-info mt-3" target="_blank"><i class="fas fa-print"></i> Cetak</a>
+          
+          </div> <!-- Tutup Card Body -->
 
-        <button class="btn btn-danger"><i class="fas fa-print"></i> Cetak</button>
+        </div> <!-- Tutup Card -->
         
 
       </div>

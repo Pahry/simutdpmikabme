@@ -1,9 +1,22 @@
+<?php  
+
+  session_start();
+  
+  if(!isset($_SESSION["login"]))
+  
+  header("location: ../login.php");
+
+  include 'functions.php';
+
+  $tampilpendonor = tampilpendonor("SELECT * FROM pendonor");
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>SI PD UTD PMI KAB. MUARA ENIM</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -26,6 +39,9 @@
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -41,7 +57,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Data Pendonor, <?php date_default_timezone_set("Asia/Jakarta"); echo date("l d-M-Y H:i:s ") . "WIB"; ?></h1>
+            <h1 class="m-0 text-dark">Data Pendonor</h1>
           </div><!-- /.col -->
           <!-- /.col -->
         </div><!-- /.row -->
@@ -54,111 +70,80 @@
       
       <!-- /.container-fluid -->
       <div class="container-fluid">
-        
-        <form>
-          <div class="form-group">
-            <label for="tanggaldonor">Tanggal Donor</label>
-            <input type="date" class="form-control form-control-lg" id="tanggaldonor">
-          </div>
-            <button class="btn btn-primary mb-5" type="submit" name="cari"><i class="fas fa-search"></i> Cari</button>
-        </form>
+        <div class="row">
+          <div class="col-12">
 
-        <a class="btn btn-success" href="tambahdonor.php"><i class="fas fa-plus"></i> Tambah Pendonor</a>   
-        <a class="btn btn-danger" href="tambahpleubotomy.php"><i class="fas fa-plus"></i> Tambah Pleubotomy</a>     
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">No</th>
-              <th scope="col">Nama</th>
-              <th scope="col">Umur</th>
-              <th scope="col">JK</th>
-              <th scope="col">Golda</th>
-              <th scope="col">No. Telp</th>
-              <th scope="col">Alamat</th>
-              <th scope="col">Donor Ke</th>
-              <th scope="col">Nomor Kantong</th>
-              <th scope="col">Bisa Dihubungi</th>
-              <th scope="col">Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>25</td>
-              <td>Laki Laki</td>
-              <td>O (+)</td>
-              <td>081122113344</td>
-              <td>Muara Enim</td>
-              <td>5x</td>
-              <td>K111111</td>
-              <td>Ya</td>
-              <td>
-                <a class="btn btn-warning" href="#"><i class="far fa-eye"></i> Detail</a>
-                <a class="btn btn-primary" href="ubahdonor.php"><i class="fas fa-edit"></i> Ubah</a>
-                <button class="btn btn-danger" name="hapus"><i class="fas fa-trash"></i> Hapus</button>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Mark</td>
-              <td>25</td>
-              <td>Laki Laki</td>
-              <td>O (+)</td>
-              <td>081122113344</td>
-              <td>Muara Enim</td>
-              <td>5x</td>
-              <td>K111111</td>
-              <td>Tidak</td>
-              <td>
-                <a class="btn btn-warning" href="#"><i class="far fa-eye"></i> Detail</a>
-                <a class="btn btn-primary" href="ubahdonor.php"><i class="fas fa-edit"></i> Ubah</a>
-                <button class="btn btn-danger"><i class="fas fa-trash"></i> Hapus</button>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>Mark</td>
-              <td>25</td>
-              <td>Laki Laki</td>
-              <td>O (+)</td>
-              <td>081122113344</td>
-              <td>Muara Enim</td>
-              <td>5x</td>
-              <td>K111111</td>
-              <td>Ya</td>
-              <td>
-                <a class="btn btn-warning" href="#"><i class="far fa-eye"></i> Detail</a>
-                <a class="btn btn-primary" href="ubahdonor.php"><i class="fas fa-edit"></i> Ubah</a>
-                <button class="btn btn-danger"><i class="fas fa-trash"></i> Hapus</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+            <!-- /.card -->
+            <div class="card">
+              <div class="card-header">
+                <a class="btn btn-success" href="tambahpendonor.php"><i class="fas fa-plus"></i> Tambah Pendonor</a> 
+              </div>
 
-        <!-- Pagination -->
-        <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-center">
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-                <span class="sr-only">Previous</span>
-              </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-                <span class="sr-only">Next</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-        <!-- Tutup Pagination -->
+              <div class="card-body">
+                <table id="example1" class="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Tanggal Donor</th>
+                      <th>Nama</th>
+                      <th>Golda</th>
+                      <th>No. Telp</th>
+                      <th>Alamat</th>
+                      <th>Donor Ke</th>
+                      <th>Nomor Kantong</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
+                    <?php $no=1; foreach ($tampilpendonor as $tplpdnr): ?>
+                      
+                      <tr>
+                        <td><?= $no; $no++;?></td>
+                        <td><?= $tplpdnr['tanggalpendonor'];?></td>
+                        <td><?= $tplpdnr['namapendonor'];?></td>
+                        <td><?= $tplpdnr['goldapendonor'];?></td>
+                        <td><?= $tplpdnr['nomorteleponpendonor'];?></td>
+                        <td><?= $tplpdnr['alamatpendonor'];?></td>
+                        <td><?= $tplpdnr['donorkependonor'];?></td>
+                        <td><?= $tplpdnr['nomorkantongpendonor'];?></td>
+                        <td>
+                          <a class="btn btn-sm btn-warning" href="detailpendonor.php?id=<?= $tplpdnr['idpendonor']?>" title="Detail"><i class="far fa-eye"></i> </a>
+                          <a class="btn btn-sm btn-primary" href="ubahdonor.php?id=<?= $tplpdnr['idpendonor'];?>" title="Ubah"><i class="fas fa-edit"></i> </a>
+                          <a class="btn btn-sm btn-danger" href="hapusdonor.php?id=<?= $tplpdnr['idpendonor'];?>" onclick="return confirm('Apakah anda yakin ?')"><i class="fas fa-trash" title="Hapus"></i> </a>
+                        </td>
+                      </tr>
 
-      </div>
+                    <?php endforeach ?>
+
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th>No</th>
+                      <th>Tanggal Donor</th>
+                      <th>Nama</th>
+                      <th>Golda</th>
+                      <th>No. Telp</th>
+                      <th>Alamat</th>
+                      <th>Donor Ke</th>
+                      <th>Nomor Kantong</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </tfoot>
+                </table>
+              
+              <a href="cetakpendonor.php" class="btn btn-info mt-3" target="_blank"><i class="fas fa-print"></i> Cetak</a>
+
+              </div> <!-- Tutup Card Body -->
+            
+            </div> <!-- Tutup Card -->
+
+          </div> <!-- Tutup Col 12 -->
+
+        </div> <!-- Tutup Row -->
+      
+      </div> <!-- Tutup Container Fluid -->
+    
     </section>
     <!-- /.content -->
   </div>
@@ -204,5 +189,28 @@
 <script src="dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+<!-- DataTables -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
+</body>
 </body>
 </html>

@@ -1,4 +1,10 @@
 <?php  
+
+  session_start();
+  
+  if(!isset($_SESSION["login"]))
+  
+  header("location: ../login.php");
   
   include 'functions.php';
   
@@ -9,9 +15,6 @@
   
     if (tambahdatapetugas($_POST) > 0 ) 
     {
-      // echo "<div class='alert alert-success' role='alert'>";
-      // echo "<h4 class='alert-heading text-center'> Data berhasil ditambahkan </h4>";
-      // echo "</div>";
       echo "<script>
               alert('Data berhasil ditambahkan');
               document.location.href = 'datapetugasutdpmi.php';
@@ -19,9 +22,6 @@
     }
       else
     {
-      // echo "Data gagal ditambahkan";
-      // echo "<br>";
-      // echo mysqli_error($koneksi);
       echo "<script>
               alert('Data gagal ditambahkan');
               document.location.href = 'datapetugasutdpmi.php';
@@ -36,7 +36,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>SI PD UTD PMI KAB. MUARA ENIM</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -90,30 +90,44 @@
       <div class="container-fluid">
         
       <form action="" method="POST">
-        <div class="form-group">
-          <label for="namappetugasutdpmi">Nama Petugas</label>
-          <input type="text" class="form-control" id="namapetugasutdpmi" name="namapetugasutdpmi" placeholder="Masukkan Nama Lengkap" required>
+        <div class="form-group row">
+          <label for="namappetugasutdpmi" class="col-sm-2 col-form-label">Nama Petugas</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" id="namapetugasutdpmi" name="namapetugasutdpmi" placeholder="Masukkan Nama Lengkap" required>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="tanggallahir">Tanggal Lahir</label>
-          <input type="date" name="tanggallahir" id="tanggallahir" class="form-control" required>
+
+        <div class="form-group row">
+          <label for="tanggallahir" class="col-sm-2 col-form-label">Tanggal Lahir</label>
+          <div class="col-sm-8">
+            <input type="date" name="tanggallahir" id="tanggallahir" class="form-control" required>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="golongandarah">Golongan Darah</label>
-          <select class="form-control" id="golongandarah" name="golongandarah">
-            <option value="A (+)">A (+)</option>
-            <option value="B (+)">B (+)</option>
-            <option value="AB (+)">AB (+)</option>
-            <option value="O (+)">O (+)</option>
-          </select>
+
+        <div class="form-group row">
+          <label for="golongandarah" class="col-sm-2 col-form-label">Golongan Darah</label>
+          <div class="col-sm-8">
+            <select class="form-control" id="golongandarah" name="golongandarah">
+              <option value="A (+)">A (+)</option>
+              <option value="B (+)">B (+)</option>
+              <option value="AB (+)">AB (+)</option>
+              <option value="O (+)">O (+)</option>
+            </select>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="pendidikan">Pendidikan</label>
-          <input type="text" name="pendidikan" id="pendidikan" class="form-control" required>
+
+        <div class="form-group row">
+          <label for="pendidikan" class="col-sm-2 col-form-label">Pendidikan</label>
+          <div class="col-sm-8">
+            <input type="text" name="pendidikan" id="pendidikan" class="form-control" required>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="jabatan">Jabatan</label>
-          <input type="text" name="jabatan" id="jabatan" class="form-control" required>
+
+        <div class="form-group row">
+          <label for="jabatan" class="col-sm-2 col-form-label">Jabatan</label>
+          <div class="col-sm-8">
+            <input type="text" name="jabatan" id="jabatan" class="form-control" required>
+          </div>
         </div>
         
         <button class="btn btn-success" type="submit" name="submit"><i class="fas fa-plus"></i> Tambah Data</button>

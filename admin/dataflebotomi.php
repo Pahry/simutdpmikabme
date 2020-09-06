@@ -1,24 +1,34 @@
 <?php 
-include 'functions.php';
+  
+  session_start();
+  
+  if(!isset($_SESSION["login"]))
+  
+  header("location: ../login.php");
 
-$tampilflebotomi = tampilflebotomi(
-  "SELECT petugasutdpmi.namapetugasutdpmi, flebotomi.idflebotomi, flebotomi.namaflebotomi,flebotomi.umurflebotomi,flebotomi.goldaflebotomi
-  FROM flebotomi
-  INNER JOIN petugasutdpmi ON flebotomi.idpetugasutdpmi = petugasutdpmi.idpetugasutdpmi");
+  include 'functions.php';
 
- ?>
+  $tampilflebotomi = tampilflebotomi("SELECT flebotomi.idflebotomi,flebotomi.tanggaldonorflebotomi,
+                    flebotomi.namaflebotomi,flebotomi.nomorteleponflebotomi, 
+                    flebotomi.nomorkantongflebotomi,flebotomi.umurflebotomi,flebotomi.goldaflebotomi,
+                    flebotomi.alamatflebotomi,petugasutdpmi.namapetugasutdpmi
+                    FROM flebotomi
+                    INNER JOIN petugasutdpmi ON flebotomi.idpetugasutdpmi = petugasutdpmi.idpetugasutdpmi
+                    ");
+
+?>
 
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>SI PD UTD PMI KAB. MUARA ENIM</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- Ionicons -->
+  <!-- Ionicons --> 
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Tempusdominus Bbootstrap 4 -->
   <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
@@ -54,7 +64,7 @@ $tampilflebotomi = tampilflebotomi(
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Data Pleubotomi, <?php date_default_timezone_set("Asia/Jakarta"); echo date("l d-M-Y H:i:s ") . "WIB"; ?></h1>
+            <h1 class="m-0 text-dark">Data Flebotomi</h1>
           </div><!-- /.col -->
           <!-- /.col -->
         </div><!-- /.row -->
@@ -70,34 +80,42 @@ $tampilflebotomi = tampilflebotomi(
           <div class="col-12">
 
             <!-- /.card -->
-
             <div class="card">
               <div class="card-header">
                 <a class="btn btn-success" href="tambahflebotomi.php"><i class="fa fa-plus"></i> Tambah Pasien Flebotomi</a>
               </div>
+
               <!-- /.card-header -->
               <div class="card-body">
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
                     <th>No</th>
+                    <th>Tanggal Donor</th>
                     <th>Nama</th>
                     <th>Golda</th>
+                    <th>Nomor Telepon</th>
+                    <th>Alamat</th>
                     <th>Petugas Aftap</th>
+                    <th>Nomor Kantong</th>
                     <th>Aksi</th>
                   </tr>
                   </thead>
                   <tbody>
                   <?php $no=1; foreach ($tampilflebotomi as $tplflb) : ?>
                   <tr>
-                    <td><?php echo $no; $no++; ?></td>
-                    <td><?php echo $tplflb['namaflebotomi'] ?></td>
-                    <td><?php echo $tplflb['goldaflebotomi']; ?></td>
-                    <td><?php echo $tplflb['namapetugasutdpmi']; ?></td>
+                    <td><?= $no; $no++; ?></td>
+                    <td><?= $tplflb['tanggaldonorflebotomi'];  ?></td>
+                    <td><?= $tplflb['namaflebotomi'];  ?></td>
+                    <td><?= $tplflb['goldaflebotomi']; ?></td>
+                    <td><?= $tplflb['nomorteleponflebotomi']; ?></td>
+                    <td><?= $tplflb['alamatflebotomi']; ?></td>
+                    <td><?= $tplflb['namapetugasutdpmi']; ?></td>
+                    <td><?= $tplflb['nomorkantongflebotomi']; ?></td>
                     <td>
-                      <a href="#" class="btn btn-warning"><i class="fas fa-eye"></i> Detail</a>
-                      <a href="ubahflebotomi.php?id=<?=$tplflb['idflebotomi'];?>" class="btn btn-primary"><i class="fas fa-edit"></i> Ubah</a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i> Hapus</a>
+                      <a href="detailflebotomi.php?id=<?= $tplflb['idflebotomi']?>" class="btn btn-sm btn-warning" title="Detail"><i class="fas fa-eye"></i></a>
+                      <a href="ubahflebotomi.php?id=<?= $tplflb['idflebotomi'];?>" class="btn btn-sm btn-primary"><i class="fas fa-edit" title="Ubah"></i></a>
+                      <a href="hapusflebotomi.php?id=<?= $tplflb['idflebotomi']; ?>" class="btn btn-sm btn-danger"><i class="fas fa-trash" title="Hapus"></i></a>
                     </td>
                   </tr>
                   <?php endforeach; ?>
@@ -105,27 +123,33 @@ $tampilflebotomi = tampilflebotomi(
                   <tfoot>
                   <tr>
                     <th>No</th>
+                    <th>Tanggal Donor</th>
                     <th>Nama</th>
-                    <th>Umur</th>
                     <th>Golda</th>
+                    <th>Nomor Telepon</th>
+                    <th>Alamat</th>
+                    <th>Petugas Aftap</th>
+                    <th>Nomor Kantong</th>
                     <th>Aksi</th>
                   </tr>
                   </tfoot>
                 </table>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-          </div>
-          <!-- /.col -->
-        </div>
-        <!-- /.row -->
-      </div>
-      <!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+
+              <a href="cetakflebotomi.php" class="btn btn-info mt-3" target="_blank"><i class="fas fa-print"></i> Cetak</a>
+
+              </div> <!-- /.card-body -->
+            
+            </div> <!-- /.card -->
+          
+          </div><!-- /.col -->
+        
+        </div><!-- /.row -->
+      
+      </div><!-- /.container-fluid -->
+    
+    </section><!-- /.content -->
+  
+  </div> <!-- /.content-wrapper -->
   
   <?php include 'footer.php'; ?>
 

@@ -1,26 +1,14 @@
-<?php include 'functions.php'; 
+<?php 
+
+  session_start();
   
-  // Konfigurasi Pagination
-// Menghitung jumlahhalaman = totaldata / dataperhalaman
-  $dataperhalaman = 5;
-
-  $result = mysqli_query($koneksi, "SELECT * FROM petugasutdpmi");
-  $totaldata = mysqli_num_rows($result);
-  $jumlahhalaman = ceil($totaldata / $dataperhalaman); 
+  if(!isset($_SESSION["login"]))
   
-  if (isset($_GET['halaman'])) {
-    $halamanaktif = $_GET["halaman"];
-  }else{
-    $halamanaktif = 1;
-  }
+  header("location: ../login.php");
 
-  $awaldata = ($dataperhalaman * $halamanaktif) - $dataperhalaman;
+  include 'functions.php'; 
 
-
-
-
-  $tampilpetugas = tampilpetugas("SELECT * FROM petugasutdpmi LIMIT $awaldata,$dataperhalaman");
-
+  $tampilpetugas = tampilpetugas("SELECT * FROM petugasutdpmi");
   
 ?>
 
@@ -29,7 +17,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>SI PD UTD PMI KAB. MUARA ENIM</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -52,6 +40,9 @@
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <!-- DataTables -->
+  <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -80,74 +71,60 @@
       
       <!-- /.container-fluid -->
       <div class="container-fluid">
-        
-        <a class="btn btn-success mt-5" href="tambahpetugasutdpmi.php"><i class="fas fa-plus"></i> Tambah Data Petugas UTD PMI</a>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn btn-success" href="tambahpetugasutdpmi.php"><i class="fas fa-plus"></i> Tambah Data Petugas UTD PMI</a>
+          </div>
+          <div class="card-body">
+            <table id="example1" class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Nama Petugas UTD PMI</th>
+                  <th>Tanggal Lahir</th>
+                  <th>Golda</th>
+                  <th>Pendidikan Tertinggi</th>
+                  <th>Jabatan</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php $no=1; foreach ($tampilpetugas as $ptgs ) : ?>
+                  <tr>
+                    <th scope="row"><?= $no; $no++; ?></th>
+                    <td><?= $ptgs['namapetugasutdpmi']; ?></td>
+                    <td><?= $ptgs['tanggallahirpetugasutdpmi']; ?></td>
+                    <td><?= $ptgs['goldapetugasutdpmi']; ?></td>
+                    <td><?= $ptgs['pendidikanpetugasutdpmi']; ?></td>
+                    <td><?= $ptgs['jabatanpetugasutdpmi']; ?></td>
+                    <td>
+                      <a class="btn btn-sm btn-primary" href="ubahpetugasutdpmi.php?id=<?= $ptgs['idpetugasutdpmi'];?>" title="Ubah"><i class="fas fa-edit"></i></a>
+                      <a class="btn btn-sm btn-danger" href="hapuspetugasutdpmi.php?idpetugasutdpmi=<?= $ptgs['idpetugasutdpmi'];?>" onclick="return confirm('Apakah anda yakin ?')" title="Hapus"><i class="fas fa-trash"></i></button>
+                    </td>
+                  </tr>
+                <?php endforeach; ?>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>No</th>
+                  <th>Nama Petugas UTD PMI</th>
+                  <th>Tanggal Lahir</th>
+                  <th>Golda</th>
+                  <th>Pendidikan Tertinggi</th>
+                  <th>Jabatan</th>
+                  <th>Aksi</th>
+                </tr>
+              </tfoot>
+            </table>
 
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">No</th>
-              <th scope="col">Nama Petugas UTD PMI</th>
-              <th scope="col">Tanggal Lahir</th>
-              <th scope="col">Golda</th>
-              <th scope="col">Pendidikan Tertinggi</th>
-              <th scope="col">Jabatan</th>
-              <th scope="col">Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php $no=1; foreach ($tampilpetugas as $ptgs ) : ?>
-            <tr>
-              <th scope="row"><?= $no; $no++; ?></th>
-              <td><?= $ptgs['namapetugasutdpmi']; ?></td>
-              <td><?= $ptgs['tanggallahirpetugasutdpmi']; ?></td>
-              <td><?= $ptgs['goldapetugasutdpmi']; ?></td>
-              <td><?= $ptgs['pendidikanpetugasutdpmi']; ?></td>
-              <td><?= $ptgs['jabatanpetugasutdpmi']; ?></td>
-              <td>
-                <a class="btn btn-primary" href="ubahpetugasutdpmi.php?id=<?= $ptgs['idpetugasutdpmi'];?>"><i class="fas fa-edit"></i> Ubah</a>
-                <a class="btn btn-danger" href="hapuspetugasutdpmi.php?idpetugasutdpmi=<?= $ptgs['idpetugasutdpmi'];?>" onclick="return confirm('Apakah anda yakin ?')"><i class="fas fa-trash"></i> Hapus</button>
-              </td>
-            </tr>
-        <?php endforeach; ?>
-          </tbody>
-        </table>
+          <a href="cetakpetugas.php" class="btn btn-info mt-3" target="_blank"><i class="fas fa-print"></i> Cetak</a>
 
-        <!-- Pagination -->
-        <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-center">
-            <li class="page-item">
-              <?php if ($halamanaktif == 1 ): ?>
-              <?php else : ?>
-                <a class="page-link" href="?halaman=1" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                  <span class="sr-only">Previous</span>
-                </a>
-              <?php endif ?>
-            </li>
+          </div><!-- Tutup Card Body -->
 
-            <?php for ($i=1; $i <= $jumlahhalaman; $i++) : ?> 
-              <?php if ($i == $halamanaktif): ?>
-                <li class="page-item active"><a class="page-link" href="?halaman=<?= $i?>"><?= $i; ?></a></li>
-              <?php else: ?>
-                <li class="page-item"><a class="page-link" href="?halaman=<?= $i?>"><?= $i; ?></a></li>
-              <?php endif ?>
-            <?php endfor; ?>
+        </div> <!-- Tutup Card -->
 
-            <li class="page-item">
-              <?php if ($halamanaktif == $jumlahhalaman): ?>
-              <?php else: ?>
-                <a class="page-link" href="?halaman=<?= $jumlahhalaman?>" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                  <span class="sr-only">Next</span>
-                </a>
-              <?php endif ?>
-            </li>
-          </ul>
-        </nav>
-        <!-- Tutup Pagination -->
+      </div><!-- Tutup Container Fluid -->
 
-      </div>
     </section>
     <!-- /.content -->
   </div>
@@ -193,5 +170,27 @@
 <script src="dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+<!-- DataTables -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
 </body>
 </html>
