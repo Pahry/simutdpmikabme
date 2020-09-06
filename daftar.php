@@ -1,55 +1,34 @@
 <?php 
 	
-	session_start();
-	
-	if (isset($_SESSION["login"])) 
-	{
-			header("Location: admin/datapendonor.php");
-			exit;
-	}	
-
 	include 'function.php';
-		
+
 	if(isset($_POST['submit'])) 
 	{
-
-		 //ENT_QUOTES digunakan untuk mengkonversi kutip satu dan dua secara aman 
-		 $username = htmlspecialchars($_POST["username"], ENT_QUOTES);
-		 $password = htmlspecialchars($_POST["password"], ENT_QUOTES);
-
-
-		 $result = mysqli_query($koneksi,"SELECT * FROM user WHERE username='$username'");
-		
-
-		// Cek Username
-		if (mysqli_num_rows($result) === 1) 
+		if (registrasi($_POST))
 		{
+		 	echo 	"<script>
+		 				alert('Username Berhasil Ditambahkan');
+		 				document.location.href='login.php';
+		 			</script>";
 
-	 		$row = mysqli_fetch_assoc($result);
+		}
+		else
+		{
+		 	echo 	"<script>
+		 				alert('Username Gagal Ditambahkan');
+		 				document.location.href='daftar.php';
+		 			</script>";
 
-	 	  	// Cek password
-	 		if (password_verify($password, $row['password'])) 
-	 		{
-
-		 		// Set Session
-		 		$_SESSION["login"] = true;
-	 			
-			 	header("location:admin/datapendonor.php");	
-			
-			 	exit;
- 
-		 	}
 		}
 
-			$error = true;
 	}
-
+		
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Login SIM UTD PMI</title>
+	<title>Daftar SIM UTD PMI</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -85,24 +64,33 @@
 <body>
 	
 	<div class="limiter">
+
 		<div class="container-login100">
+		
 			<div class="wrap-login100">
+		
 				<div class="login100-form-title" style="background-image: url(assets/images/bg-01.jpg);">
 					<span class="login100-form-title-1">
-						Sistem Informasi Pelayanan Darah <br>UTD PMI Kabupaten Muara Enim
+						Registrasi User <br>SIM PD UTD PMI Kabupaten Muara Enim
 					</span>
 				</div>
 
 				<form action="" method="POST" class="login100-form validate-form">
 					<div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
 						<span class="label-input100">Username</span>
-						<input class="input100" type="text" name="username" placeholder="Masukkan username" maxlength="8">
+						<input class="input100" type="text" name="username" placeholder="Masukkan Username" maxlength="8">
 						<span class="focus-input100"></span>
 					</div>
 
 					<div class="wrap-input100 validate-input m-b-18" data-validate = "Password is required">
 						<span class="label-input100">Password</span>
-						<input class="input100" type="password" name="password" placeholder="Masukkan password">
+						<input class="input100" type="password" name="password" placeholder="Masukkan Password">
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input m-b-18" data-validate = "Password is required">
+						<span class="label-input100">Konfirmasi Password</span>
+						<input class="input100" type="password" name="password2" placeholder="Konfirmasi Password">
 						<span class="focus-input100"></span>
 					</div>
 
@@ -117,14 +105,20 @@
 
 					<div class="container-login100-form-btn">
 						<button class="login100-form-btn" type="submit" name="submit">
-							Masuk
+							Daftar
 						</button>
+						<a href="login.php" class="login100-form-btn" type="submit" name="submit" style="background-color:red">
+							 Login
+						</a>
 					</div>
 				</form>
-			</div>
-		</div>
-	</div>
-	
+				
+			</div> <!-- Wrap Login 100 -->
+
+		</div> <!-- Container Login 100 -->
+
+	</div> <!-- Limiter -->
+		
 <!--===============================================================================================-->
 	<script src="aassets/vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
